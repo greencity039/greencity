@@ -26,7 +26,7 @@ window.GREENCITY_CONFIG = {
   SUPABASE_URL: "https://mzhgngbphcgvfcdmcsas.supabase.co",
 
   /* Supabase public anon/publishable key */
-  SUPABASE_ANON_KEY: "PASTE_YOUR_SUPABASE_ANON_KEY_HERE",
+  sb_publishable__Voo04T5sGBgR-bpuxRcbg_aytRRWtx
 
   /* GreenCity WhatsApp number */
   WHATSAPP_NUMBER: "27664926146",
