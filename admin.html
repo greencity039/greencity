@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenCity Admin</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header solid-header">
+  <a class="brand dark-brand" href="index.html">
+    <img src="images/greencity-logo.png" alt="GreenCity logo" class="brand-logo">
+    <span class="brand-name">GREENCITY ADMIN</span>
+  </a>
+  <a href="index.html" class="header-book">Public Site</a>
+</header>
+
+<main class="private-main">
+  <div class="private-card wide">
+    <p class="eyebrow">GREEN CITY ADMIN</p>
+    <h1>Bookings.</h1>
+    <p>This page is for the GreenCity owner. Secure Supabase Auth should be enabled before using it for private customer management.</p>
+    <button id="loadBookings" class="btn btn-primary">Load Bookings</button>
+    <div id="adminMessage" class="notice"></div>
+    <div id="bookingList"></div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+document.getElementById("loadBookings").addEventListener("click", async () => {
+  const db = window.greenCitySupabase;
+  const msg = document.getElementById("adminMessage");
+  const list = document.getElementById("bookingList");
+
+  if (!db) {
+    msg.textContent = "Supabase is not connected yet.";
+    msg.className = "notice error";
+    return;
+  }
+
+  const { data, error } = await db
+    .from("bookings")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    msg.textContent = error.message;
+    msg.className = "notice error";
+    return;
+  }
+
+  msg.textContent = `${data.length} booking(s) loaded.`;
+  msg.className = "notice success";
+
+  list.innerHTML = data.length ? data.map(x => `
+    <div class="card admin-booking">
+      <h3>${escapeHtml(x.appointment_number)}</h3>
+      <p><b>${escapeHtml(x.customer_name)}</b> — ${escapeHtml(x.service_type)}</p>
+      <p>${escapeHtml(x.item_details)} · ${escapeHtml(x.area)}</p>
+      <p>${escapeHtml(x.preferred_date)} at ${escapeHtml(x.preferred_time)}</p>
+      <p>Status: <b>${escapeHtml(x.status)}</b></p>
+    </div>
+  `).join("") : '<div class="notice">No bookings yet.</div>';
+});
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+</script>
+</body>
+</html>

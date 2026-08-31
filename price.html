@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Prices | GreenCity</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header solid-header">
+  <a class="brand dark-brand" href="index.html">
+    <img src="images/greencity-logo.png" alt="GreenCity logo" class="brand-logo">
+    <span class="brand-name">GREENCITY</span>
+  </a>
+  <a href="booking.html" class="header-book">Book</a>
+</header>
+
+<main class="private-main">
+  <div class="private-card">
+    <p class="eyebrow">PRIVATE CUSTOMER ACCESS</p>
+    <h1>Price preview.</h1>
+    <p>Enter the private code GreenCity sent you on WhatsApp.</p>
+
+    <label for="accessCode">Secret access code</label>
+    <input id="accessCode" type="password" autocomplete="off" placeholder="Enter your code">
+    <button id="unlockBtn" class="btn btn-primary">Unlock Prices</button>
+
+    <div id="priceMessage" class="notice"></div>
+
+    <div id="priceSearch" class="hidden">
+      <label for="priceQuery">Type your car model or bin size</label>
+      <input id="priceQuery" placeholder="e.g. VW Polo / 240L">
+      <button id="findPriceBtn" class="btn btn-primary">Show Price</button>
+    </div>
+
+    <div id="priceResults"></div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const db = window.greenCitySupabase;
+  const code = document.getElementById("accessCode");
+  const unlock = document.getElementById("unlockBtn");
+  const search = document.getElementById("priceSearch");
+  const message = document.getElementById("priceMessage");
+  const query = document.getElementById("priceQuery");
+  const find = document.getElementById("findPriceBtn");
+  const results = document.getElementById("priceResults");
+  let verifiedCode = "";
+
+  unlock.addEventListener("click", async () => {
+    if (!db) {
+      message.textContent = "Supabase is not connected yet. Add the public keys to config.js.";
+      message.className = "notice error";
+      return;
+    }
+    const value = code.value.trim();
+    if (!value) return;
+
+    const { data, error } = await db.rpc("verify_price_code", { p_code: value });
+    if (error || !data) {
+      message.textContent = "Invalid or expired code.";
+      message.className = "notice error";
+      return;
+    }
+
+    verifiedCode = value;
+    code.classList.add("hidden");
+    unlock.classList.add("hidden");
+    search.classList.remove("hidden");
+    message.textContent = "Access granted.";
+    message.className = "notice success";
+  });
+
+  find.addEventListener("click", async () => {
+    if (!db || !verifiedCode) return;
+    const term = query.value.trim();
+    if (!term) return;
+
+    const { data, error } = await db.rpc("get_vehicle_price", {
+      p_code: verifiedCode,
+      p_search: term
+    });
+
+    if (error) {
+      results.innerHTML = '<div class="notice error">Unable to retrieve the price.</div>';
+      return;
+    }
+
+    if (!data?.length) {
+      results.innerHTML = '<div class="notice">No matching price found. Check the vehicle name or bin size.</div>';
+      return;
+    }
+
+    results.innerHTML = data.map(item => `
+      <div class="price-result card">
+        <span>${escapeHtml(item.item_name)}</span>
+        <strong>R${Number(item.price).toFixed(2)}</strong>
+      </div>
+    `).join("");
+  });
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, ch => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[ch]));
+  }
+});
+</script>
+</body>
+</html>

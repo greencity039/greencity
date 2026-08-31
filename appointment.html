@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appointment | GreenCity</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header solid-header">
+  <a class="brand dark-brand" href="index.html">
+    <img src="images/greencity-logo.png" alt="GreenCity logo" class="brand-logo">
+    <span class="brand-name">GREENCITY</span>
+  </a>
+  <a href="booking.html" class="header-book">Book</a>
+</header>
+
+<main class="private-main">
+  <div class="private-card">
+    <p class="eyebrow">GREENCITY APPOINTMENT</p>
+    <h1>Appointment slip.</h1>
+    <p>Enter your appointment number to view the latest booking status.</p>
+    <label for="appointmentNumber">Appointment number</label>
+    <input id="appointmentNumber" placeholder="GC-123456">
+    <button id="findAppointment" class="btn btn-primary">Find Appointment</button>
+    <div id="appointmentMessage" class="notice"></div>
+    <div id="appointmentResult"></div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="supabase-config.js"></script>
+<script>
+document.getElementById("findAppointment").addEventListener("click", async () => {
+  const db = window.greenCitySupabase;
+  const number = document.getElementById("appointmentNumber").value.trim();
+  const msg = document.getElementById("appointmentMessage");
+  const out = document.getElementById("appointmentResult");
+
+  if (!db) {
+    msg.textContent = "Supabase is not connected yet.";
+    msg.className = "notice error";
+    return;
+  }
+  if (!number) return;
+
+  const { data, error } = await db.rpc("get_appointment", { p_number: number });
+  if (error || !data?.length) {
+    msg.textContent = "Appointment not found.";
+    msg.className = "notice error";
+    out.innerHTML = "";
+    return;
+  }
+
+  const x = data[0];
+  msg.textContent = "Appointment found.";
+  msg.className = "notice success";
+  out.innerHTML = `
+    <div class="card appointment-slip">
+      <h2>GreenCity Appointment</h2>
+      <p><b>Appointment:</b> ${escapeHtml(x.appointment_number)}</p>
+      <p><b>Name:</b> ${escapeHtml(x.customer_name)}</p>
+      <p><b>Service:</b> ${escapeHtml(x.service_type)}</p>
+      <p><b>Car/Bin:</b> ${escapeHtml(x.item_details)}</p>
+      <p><b>Area:</b> ${escapeHtml(x.area)}</p>
+      <p><b>Date:</b> ${escapeHtml(x.preferred_date)}</p>
+      <p><b>Time:</b> ${escapeHtml(x.preferred_time)}</p>
+      <p><b>Status:</b> ${escapeHtml(x.status)}</p>
+    </div>`;
+});
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+</script>
+</body>
+</html>

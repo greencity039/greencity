@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book GreenCity bin cleaning or mobile car wash services.">
+  <title>Book a Service | GreenCity</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="booking-page">
+<header class="site-header booking-header">
+  <a class="brand" href="index.html">
+    <img src="images/greencity-logo.png" alt="GreenCity logo" class="brand-logo">
+    <span class="brand-name">GREENCITY</span>
+  </a>
+  <a href="index.html" class="header-book">Back Home</a>
+</header>
+
+<main class="booking-main">
+  <div class="booking-intro">
+    <p class="eyebrow">GREENCITY SERVICES</p>
+    <h1>Book your <span>service.</span></h1>
+    <p>Tell us what you need, where you are and when you would like us to come.
+      Your request will be sent directly to GreenCity on WhatsApp.</p>
+  </div>
+
+  <div class="booking-card">
+    <form id="bookingForm" novalidate>
+      <div class="form-section">
+        <div class="form-section-title"><span>01</span><h2>Your details</h2></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="customerName">Full Name *</label>
+            <input id="customerName" name="customerName" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">WhatsApp Number *</label>
+            <input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel"
+              placeholder="e.g. 072 123 4567" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title"><span>02</span><h2>Choose a service</h2></div>
+        <div class="service-options">
+          <label class="service-option">
+            <input type="radio" name="service" value="Wheelie Bin Cleaning" required>
+            <span><strong>Bin Cleaning</strong><small>Professional household or business bin cleaning.</small></span>
+          </label>
+          <label class="service-option">
+            <input type="radio" name="service" value="Mobile Car Wash">
+            <span><strong>Mobile Car Wash</strong><small>We come to your home, workplace or agreed location.</small></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title"><span>03</span><h2>Service details</h2></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="itemDetails">Car / Bin Details *</label>
+            <input id="itemDetails" name="itemDetails" required>
+          </div>
+          <div class="form-group">
+            <label for="area">Area / Town *</label>
+            <input id="area" name="area" placeholder="e.g. Bushbuckridge" required>
+          </div>
+          <div class="form-group full">
+            <label for="address">Service Address *</label>
+            <input id="address" name="address" autocomplete="street-address" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title"><span>04</span><h2>Preferred appointment</h2></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="date">Preferred Date *</label>
+            <input id="date" name="date" type="date" required>
+          </div>
+          <div class="form-group">
+            <label for="time">Preferred Time *</label>
+            <input id="time" name="time" type="time" required>
+          </div>
+          <div class="form-group full">
+            <label for="notes">Additional Notes</label>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div id="bookingMessage" class="notice"></div>
+      <button id="bookBtn" class="btn btn-primary" type="submit">Book Now on WhatsApp</button>
+    </form>
+  </div>
+</main>
+
+<footer class="footer simple-footer">
+  <div class="footer-bottom">
+    <span>© <span data-year></span> GreenCity.</span>
+    <a href="index.html">Home</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="supabase-config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
