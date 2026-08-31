@@ -23,7 +23,7 @@ inside this file.
 window.GREENCITY_CONFIG = {
 
   /* GreenCity Supabase project URL */
-  SUPABASE_URL: "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE",
+  SUPABASE_URL: "https://mzhgngbphcgvfcdmcsas.supabase.co",
 
   /* Supabase public anon/publishable key */
   SUPABASE_ANON_KEY: "PASTE_YOUR_SUPABASE_ANON_KEY_HERE",
