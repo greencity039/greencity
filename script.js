@@ -17,21 +17,6 @@
         config.BOOKING_TABLE || "bookings";
 
 
-    function showMessage(message) {
-        const box = document.getElementById("bookingMessage");
-
-        if (box) {
-            box.textContent = message;
-            box.style.display = "block";
-        }
-    }
-
-
-    function makeBookingNumber() {
-        return "GC-" + Date.now();
-    }
-
-
     function getValue(id) {
         const element = document.getElementById(id);
         return element ? element.value.trim() : "";
@@ -48,7 +33,12 @@
     }
 
 
-    async function saveToSupabase(booking) {
+    function makeBookingNumber() {
+        return "GC-" + Date.now();
+    }
+
+
+    async function saveBooking(booking) {
 
         if (
             !SUPABASE_URL ||
@@ -56,7 +46,7 @@
             typeof window.supabase === "undefined"
         ) {
             console.warn(
-                "GreenCity: Supabase is not available."
+                "GreenCity: Supabase connection is unavailable."
             );
 
             return false;
@@ -76,6 +66,7 @@
                     .insert([booking]);
 
             if (error) {
+
                 console.error(
                     "GreenCity Supabase error:",
                     error
@@ -100,12 +91,6 @@
 
     function sendToWhatsApp(booking) {
 
-        /*
-         * The number is also kept as the configured
-         * GreenCity number here so the booking cannot
-         * fail simply because config.js was not loaded.
-         */
-
         const number =
             WHATSAPP_NUMBER || "27664926146";
 
@@ -129,13 +114,14 @@ Area: ${booking.area}
 Address: ${booking.address}
 
 APPOINTMENT
-Date: ${booking.date}
-Time: ${booking.time}
+Date: ${booking.appointment_date}
+Time: ${booking.appointment_time}
 
 NOTES
 ${booking.notes || "None"}
 
-Status: Pending`;
+STATUS
+Pending`;
 
         const whatsappURL =
             "https://wa.me/" +
@@ -157,20 +143,30 @@ Status: Pending`;
         const button =
             document.getElementById("bookBtn");
 
+        const messageBox =
+            document.getElementById("bookingMessage");
+
+
         if (!form) {
             return;
         }
 
 
         if (!form.checkValidity()) {
+
             form.reportValidity();
+
             return;
         }
 
 
         if (button) {
+
             button.disabled = true;
-            button.textContent = "Processing...";
+
+            button.textContent =
+                "Processing...";
+
         }
 
 
@@ -197,10 +193,10 @@ Status: Pending`;
             address:
                 getValue("address"),
 
-            date:
+            appointment_date:
                 getValue("date"),
 
-            time:
+            appointment_time:
                 getValue("time"),
 
             notes:
@@ -215,19 +211,40 @@ Status: Pending`;
 
 
         /*
-         * Save booking to Supabase.
-         * WhatsApp is still opened even if the database
-         * temporarily fails, so the customer isn't trapped.
+         * Save to Supabase first.
          */
 
-        await saveToSupabase(booking);
+        const saved =
+            await saveBooking(booking);
 
 
         /*
-         * Send booking to GreenCity WhatsApp.
+         * Tell the user if the database
+         * accepted the booking.
+         */
+
+        if (messageBox) {
+
+            if (saved) {
+
+                messageBox.textContent =
+                    "Booking received. Opening WhatsApp...";
+
+            } else {
+
+                messageBox.textContent =
+                    "Opening WhatsApp...";
+
+            }
+        }
+
+
+        /*
+         * Then open WhatsApp.
          */
 
         sendToWhatsApp(booking);
+
     }
 
 
@@ -241,12 +258,9 @@ Status: Pending`;
         }
 
 
-        /*
-         * Set minimum booking date to today.
-         */
-
         const date =
             document.getElementById("date");
+
 
         if (date) {
 
@@ -275,6 +289,22 @@ Status: Pending`;
             "submit",
             handleBooking
         );
+
+
+        const yearElements =
+            document.querySelectorAll(
+                "[data-year]"
+            );
+
+        yearElements.forEach(
+            function (element) {
+
+                element.textContent =
+                    new Date().getFullYear();
+
+            }
+        );
+
     }
 
 
@@ -291,6 +321,7 @@ Status: Pending`;
     } else {
 
         start();
+
     }
 
 })();
