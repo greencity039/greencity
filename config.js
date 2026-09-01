@@ -1,36 +1,21 @@
-/*
- * GreenCity Configuration
- * =======================
- * Only edit the values marked CHANGE.
- */
-
 window.GREENCITY_CONFIG = {
 
-    /*
-     * Supabase Project URL
-     * CHANGE: paste your GreenCity Supabase URL here.
-     */
-    SUPABASE_URL:
-        "https://mzhgngbphcgvfcdmcsas.supabase.co",
+    WHATSAPP_NUMBER: "27664926146",
+
+    SUPABASE_URL: "https://mzhgngbphcgvfcdmcsas.supabase.co",
 
     /*
-     * Supabase Publishable Key
-     * CHANGE: paste your sb_publishable_... key here.
+     * Paste your Supabase PUBLISHABLE KEY between the quotes.
+     * It starts with: sb_publishable_
      */
-    SUPABASE_ANON_KEY:
-    sb_publishable__Voo04T5sGBgR-bpuxRcbg_aytRRWtx
+    SUPABASE_ANON_KEY:sb_publishable__Voo04T5sGBgR-bpuxRcbg_aytRRWtx
 
     /*
-     * GreenCity WhatsApp number
-     * South Africa format:
-     * 27 + number without the first 0
+     * Same key, kept under both names so the GreenCity
+     * scripts can find it.
      */
-    WHATSAPP_NUMBER:
-        "0664926146",
+    SUPABASE_PUBLISHABLE_KEY:sb_publishable__Voo04T5sGBgR-bpuxRcbg_aytRRWtx
 
-    /*
-     * Database table used for bookings.
-     */
-    BOOKING_TABLE:
-        "bookings"
+    BOOKING_TABLE: "bookings"
+
 };
