@@ -1,304 +1,859 @@
-/* =========================================================
-   GREENCITY — SITE JAVASCRIPT
-   Mobile menu, cookies, booking validation,
-   Supabase booking storage and WhatsApp booking.
-   ========================================================= */
+/*
+===========================================================
+GREENCITY - MAIN SCRIPT
+===========================================================
+Handles:
+- Supabase connection
+- Booking database storage
+- WhatsApp booking message
+- Shared GreenCity configuration
+===========================================================
+*/
 
-document.addEventListener("DOMContentLoaded", () => {
-  const cfg = window.GREENCITY_CONFIG || {};
-  const db = window.greenCitySupabase || null;
+(function () {
 
-  /* =========================
-     MOBILE MENU
-     ========================= */
-  const menuToggle = document.querySelector("[data-menu-toggle]");
-  const mobileMenu = document.querySelector("[data-mobile-menu]");
+    "use strict";
 
-  if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener("click", () => {
-      mobileMenu.classList.toggle("active");
-      menuToggle.classList.toggle("active");
-      menuToggle.setAttribute(
-        "aria-expanded",
-        mobileMenu.classList.contains("active") ? "true" : "false"
-      );
-    });
-  }
+    /*
+    =======================================================
+    CONFIGURATION
+    =======================================================
+    */
 
-  /* =========================
-     FOOTER YEAR
-     ========================= */
-  document.querySelectorAll("[data-year]").forEach((element) => {
-    element.textContent = new Date().getFullYear();
-  });
+    const config =
+        window.GREENCITY_CONFIG || {};
 
-  /* =========================
-     COOKIE CONSENT
-     ========================= */
-  const cookieBanner = document.getElementById("cookieBanner");
-  const savedConsent = localStorage.getItem("greencityCookieConsent");
+    const SUPABASE_URL =
+        config.SUPABASE_URL || "";
 
-  if (cookieBanner && !savedConsent) {
-    cookieBanner.classList.add("show");
-  }
+    const SUPABASE_ANON_KEY =
+        config.SUPABASE_ANON_KEY || "";
 
-  const acceptCookies = document.getElementById("acceptCookies");
+    const WHATSAPP_NUMBER =
+        config.WHATSAPP_NUMBER || "";
 
-  if (acceptCookies) {
-    acceptCookies.addEventListener("click", () => {
-      localStorage.setItem("greencityCookieConsent", "all");
-      cookieBanner?.classList.remove("show");
-    });
-  }
+    const BOOKING_TABLE =
+        config.BOOKING_TABLE || "bookings";
 
-  const necessaryCookies = document.getElementById("necessaryCookies");
 
-  if (necessaryCookies) {
-    necessaryCookies.addEventListener("click", () => {
-      localStorage.setItem("greencityCookieConsent", "necessary");
-      cookieBanner?.classList.remove("show");
-    });
-  }
+    /*
+    =======================================================
+    BASIC HELPERS
+    =======================================================
+    */
 
-  /* =========================
-     DATE INPUT
-     ========================= */
-  document.querySelectorAll('input[type="date"]').forEach((input) => {
-    const today = new Date();
-
-    const localDate = new Date(
-      today.getTime() - today.getTimezoneOffset() * 60000
-    )
-      .toISOString()
-      .slice(0, 10);
-
-    input.min = localDate;
-  });
-
-  /* =========================
-     BOOKING FORM
-     ========================= */
-  const bookingForm = document.getElementById("bookingForm");
-
-  if (!bookingForm) {
-    return;
-  }
-
-  const serviceInputs = [
-    ...bookingForm.querySelectorAll('input[name="service"]')
-  ];
-
-  const serviceType = document.getElementById("serviceType");
-  const itemDetails = document.getElementById("itemDetails");
-
-  function getValue(id) {
-    const element = document.getElementById(id);
-
-    if (!element) {
-      return "";
+    function getElement(id) {
+        return document.getElementById(id);
     }
 
-    return String(element.value || "").trim();
-  }
 
-  function getSelectedService() {
-    const selectedRadio = bookingForm.querySelector(
-      'input[name="service"]:checked'
-    );
+    function cleanPhone(phone) {
 
-    if (selectedRadio?.value) {
-      return selectedRadio.value;
+        return String(phone || "")
+            .trim()
+            .replace(/[^\d+]/g, "");
+
     }
 
-    return serviceType?.value || "";
-  }
 
-  function updateItemPlaceholder() {
-    if (!itemDetails) {
-      return;
-    }
+    function createAppointmentNumber() {
 
-    if (getSelectedService() === "Wheelie Bin Cleaning") {
-      itemDetails.placeholder = "e.g. 120L, 240L or 360L bin";
-    } else {
-      itemDetails.placeholder =
-        "e.g. VW Polo, Toyota Corolla or Ford Ranger";
-    }
-  }
-
-  serviceInputs.forEach((input) => {
-    input.addEventListener("change", updateItemPlaceholder);
-  });
-
-  if (serviceType) {
-    serviceType.addEventListener("change", updateItemPlaceholder);
-  }
-
-  updateItemPlaceholder();
-
-  /* =========================
-     BOOKING SUBMISSION
-     ========================= */
-  bookingForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const button = bookingForm.querySelector('button[type="submit"]');
-    const message = document.getElementById("bookingMessage");
-
-    const name = getValue("customerName");
-    const phone = getValue("customerPhone");
-    const service = getSelectedService();
-    const item =
-      getValue("itemDetails") ||
-      getValue("vehicle") ||
-      getValue("binDetails");
-
-    const area = getValue("area");
-    const address = getValue("address");
-    const date = getValue("date");
-    const time = getValue("time");
-    const notes = getValue("notes");
-
-    /* =========================
-       VALIDATION
-       ========================= */
-    if (
-      !name ||
-      !phone ||
-      !service ||
-      !item ||
-      !area ||
-      !address ||
-      !date ||
-      !time
-    ) {
-      if (message) {
-        message.textContent =
-          "Please complete all required booking fields.";
-        message.className = "notice error";
-      }
-
-      return;
-    }
-
-    if (button) {
-      button.disabled = true;
-      button.textContent = "Preparing booking…";
-    }
-
-    /* =========================
-       APPOINTMENT NUMBER
-       ========================= */
-    let appointmentNumber =
-      "GC-" + Math.floor(100000 + Math.random() * 900000);
-
-    /* =========================
-       SAVE TO SUPABASE
-       ========================= */
-    if (db) {
-      try {
-        const bookingData = {
-          appointment_number: appointmentNumber,
-          customer_name: name,
-          customer_phone: phone,
-          service_type: service,
-          item_details: item,
-          area: area,
-          address: address,
-          preferred_date: date,
-          preferred_time: time,
-          notes: notes || null,
-          status: "pending"
-        };
-
-        const result = await db
-          .from("bookings")
-          .insert(bookingData)
-          .select("appointment_number")
-          .single();
-
-        if (!result.error && result.data?.appointment_number) {
-          appointmentNumber = result.data.appointment_number;
-        }
-
-        if (result.error) {
-          console.warn(
-            "GreenCity: Supabase booking could not be saved.",
-            result.error
-          );
-        }
-      } catch (error) {
-        console.warn(
-          "GreenCity: Supabase connection error.",
-          error
+        return (
+            "GC-" +
+            Math.floor(
+                100000 +
+                Math.random() * 900000
+            )
         );
-      }
+
     }
 
-    /* =========================
-       WHATSAPP MESSAGE
-       ========================= */
-    const whatsappMessage = [
-      "🌿 GREENCITY BOOKING REQUEST",
-      "",
-      `Appointment: ${appointmentNumber}`,
-      `Name: ${name}`,
-      `WhatsApp: ${phone}`,
-      `Service: ${service}`,
-      `Car/Bin: ${item}`,
-      `Area: ${area}`,
-      `Address: ${address}`,
-      `Date: ${date}`,
-      `Time: ${time}`,
-      `Notes: ${notes || "None"}`,
-      "",
-      "Status: PENDING",
-      "",
-      "Please confirm this appointment with GreenCity."
-    ].join("\n");
 
-    const whatsappNumber = String(
-      cfg.WHATSAPP_NUMBER || ""
-    ).replace(/[^\d]/g, "");
+    function showMessage(message, type) {
 
-    if (!whatsappNumber) {
-      if (message) {
-        message.textContent =
-          "GreenCity WhatsApp number has not been configured yet.";
-        message.className = "notice error";
-      }
+        let box =
+            getElement("greencityMessage");
 
-      if (button) {
-        button.disabled = false;
-        button.textContent = "Book Now on WhatsApp";
-      }
+        if (!box) {
 
-      return;
+            box =
+                document.createElement("div");
+
+            box.id =
+                "greencityMessage";
+
+            box.style.marginTop =
+                "15px";
+
+            box.style.padding =
+                "14px";
+
+            box.style.borderRadius =
+                "10px";
+
+            box.style.fontSize =
+                "14px";
+
+            const form =
+                getElement("bookingForm");
+
+            if (form) {
+                form.appendChild(box);
+            } else {
+                document.body.appendChild(box);
+            }
+
+        }
+
+        box.textContent =
+            message;
+
+        if (type === "error") {
+
+            box.style.background =
+                "#fbeaea";
+
+            box.style.color =
+                "#8a1f1f";
+
+        } else {
+
+            box.style.background =
+                "#edf6ef";
+
+            box.style.color =
+                "#315f3e";
+
+        }
+
     }
 
-    /* =========================
-       SAVE APPOINTMENT LOCALLY
-       ========================= */
-    localStorage.setItem(
-      "greencityLastAppointment",
-      appointmentNumber
+
+    /*
+    =======================================================
+    CHECK CONFIGURATION
+    =======================================================
+    */
+
+    function configurationIsReady() {
+
+        if (!SUPABASE_URL) {
+            console.error(
+                "GreenCity: SUPABASE_URL is missing."
+            );
+            return false;
+        }
+
+        if (!SUPABASE_ANON_KEY) {
+            console.error(
+                "GreenCity: SUPABASE_ANON_KEY is missing."
+            );
+            return false;
+        }
+
+        if (!WHATSAPP_NUMBER) {
+            console.error(
+                "GreenCity: WHATSAPP_NUMBER is missing."
+            );
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    /*
+    =======================================================
+    CREATE SUPABASE CLIENT
+    =======================================================
+    */
+
+    let supabaseClient = null;
+
+    function createSupabaseClient() {
+
+        if (
+            typeof window.supabase ===
+            "undefined"
+        ) {
+
+            console.error(
+                "GreenCity: Supabase library was not loaded."
+            );
+
+            return null;
+
+        }
+
+        if (
+            !SUPABASE_URL ||
+            !SUPABASE_ANON_KEY
+        ) {
+
+            return null;
+
+        }
+
+        try {
+
+            return window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+        } catch (error) {
+
+            console.error(
+                "GreenCity: Could not create Supabase client.",
+                error
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    /*
+    =======================================================
+    SAVE BOOKING TO SUPABASE
+    =======================================================
+    */
+
+    async function saveBookingToSupabase(
+        booking
+    ) {
+
+        if (!supabaseClient) {
+
+            console.warn(
+                "GreenCity: Supabase client unavailable."
+            );
+
+            return {
+                success: false,
+                error:
+                    "Database connection is unavailable."
+            };
+
+        }
+
+        try {
+
+            const { data, error } =
+                await supabaseClient
+                    .from(BOOKING_TABLE)
+                    .insert([
+                        {
+                            appointment_number:
+                                booking.appointmentNumber,
+
+                            customer_name:
+                                booking.customerName,
+
+                            customer_phone:
+                                booking.customerPhone,
+
+                            service_type:
+                                booking.serviceType,
+
+                            vehicle:
+                                booking.vehicle,
+
+                            area:
+                                booking.area,
+
+                            address:
+                                booking.address,
+
+                            date:
+                                booking.date,
+
+                            time:
+                                booking.time,
+
+                            notes:
+                                booking.notes,
+
+                            status:
+                                booking.status,
+
+                            service_price:
+                                booking.servicePrice,
+
+                            tip:
+                                booking.tip,
+
+                            total:
+                                booking.total,
+
+                            created_at:
+                                booking.createdAt
+                        }
+                    ])
+                    .select();
+
+
+            if (error) {
+
+                console.error(
+                    "GreenCity Supabase booking error:",
+                    error
+                );
+
+                return {
+                    success: false,
+                    error: error
+                };
+
+            }
+
+            return {
+                success: true,
+                data: data
+            };
+
+        } catch (error) {
+
+            console.error(
+                "GreenCity database error:",
+                error
+            );
+
+            return {
+                success: false,
+                error: error
+            };
+
+        }
+
+    }
+
+
+    /*
+    =======================================================
+    CREATE WHATSAPP MESSAGE
+    =======================================================
+    */
+
+    function createWhatsAppMessage(
+        booking
+    ) {
+
+        return (
+`🌿 GREENCITY NEW BOOKING REQUEST
+
+━━━━━━━━━━━━━━━━━━
+
+APPOINTMENT
+${booking.appointmentNumber}
+
+CUSTOMER
+Name: ${booking.customerName}
+WhatsApp: ${booking.customerPhone}
+
+SERVICE
+${booking.serviceType}
+
+VEHICLE / BIN
+${booking.vehicle}
+
+AREA
+${booking.area}
+
+ADDRESS
+${booking.address}
+
+PREFERRED DATE
+${booking.date}
+
+PREFERRED TIME
+${booking.time}
+
+ADDITIONAL NOTES
+${booking.notes || "None"}
+
+━━━━━━━━━━━━━━━━━━
+
+STATUS
+PENDING
+
+Please review this booking and reply with the next instructions.`
+        );
+
+    }
+
+
+    /*
+    =======================================================
+    OPEN WHATSAPP
+    =======================================================
+    */
+
+    function openWhatsApp(
+        message
+    ) {
+
+        const number =
+            String(
+                WHATSAPP_NUMBER
+            )
+                .replace(/\D/g, "");
+
+        if (!number) {
+
+            showMessage(
+                "GreenCity WhatsApp number has not been configured yet.",
+                "error"
+            );
+
+            return false;
+
+        }
+
+        const url =
+            "https://wa.me/" +
+            number +
+            "?text=" +
+            encodeURIComponent(
+                message
+            );
+
+        window.location.href =
+            url;
+
+        return true;
+
+    }
+
+
+    /*
+    =======================================================
+    GET BOOKING FORM
+    =======================================================
+    */
+
+    function setupBookingForm() {
+
+        const form =
+            getElement("bookingForm");
+
+        if (!form) {
+
+            return;
+
+        }
+
+
+        const serviceType =
+            getElement("serviceType");
+
+        const serviceInfo =
+            getElement("serviceInfo");
+
+        const dateInput =
+            getElement("date");
+
+        const bookingButton =
+            getElement("bookingButton");
+
+
+        /*
+        ---------------------------------------------------
+        DATE
+        ---------------------------------------------------
+        */
+
+        if (dateInput) {
+
+            const today =
+                new Date();
+
+            const localToday =
+                new Date(
+                    today.getTime() -
+                    today.getTimezoneOffset() *
+                    60000
+                )
+                    .toISOString()
+                    .split("T")[0];
+
+            dateInput.min =
+                localToday;
+
+        }
+
+
+        /*
+        ---------------------------------------------------
+        SERVICE INFORMATION
+        ---------------------------------------------------
+        */
+
+        if (
+            serviceType &&
+            serviceInfo
+        ) {
+
+            serviceType.addEventListener(
+                "change",
+                function () {
+
+                    if (
+                        serviceType.value ===
+                        "Car Wash"
+                    ) {
+
+                        serviceInfo.style.display =
+                            "block";
+
+                        serviceInfo.innerHTML =
+                            "<strong>Car Wash:</strong> " +
+                            "Enter your vehicle make and model. " +
+                            "GreenCity will confirm the exact service and price.";
+
+                    }
+
+                    else if (
+                        serviceType.value ===
+                        "Wheelie Bin Cleaning"
+                    ) {
+
+                        serviceInfo.style.display =
+                            "block";
+
+                        serviceInfo.innerHTML =
+                            "<strong>Bin Cleaning:</strong> " +
+                            "Enter your bin size, for example 120L, 240L or 360L.";
+
+                    }
+
+                    else {
+
+                        serviceInfo.style.display =
+                            "none";
+
+                        serviceInfo.innerHTML =
+                            "";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+        ---------------------------------------------------
+        FORM SUBMISSION
+        ---------------------------------------------------
+        */
+
+        form.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                /*
+                VALIDATION
+                */
+
+                if (
+                    !form.checkValidity()
+                ) {
+
+                    form.reportValidity();
+
+                    return;
+
+                }
+
+
+                /*
+                PREVENT DOUBLE SUBMISSION
+                */
+
+                if (
+                    bookingButton
+                ) {
+
+                    bookingButton.disabled =
+                        true;
+
+                    bookingButton.textContent =
+                        "Sending...";
+
+                }
+
+
+                /*
+                GET FORM VALUES
+                */
+
+                const customerName =
+                    (
+                        getElement(
+                            "customerName"
+                        )?.value || ""
+                    )
+                        .trim();
+
+
+                const customerPhone =
+                    cleanPhone(
+                        getElement(
+                            "customerPhone"
+                        )?.value || ""
+                    );
+
+
+                const service =
+                    serviceType
+                        ? serviceType.value
+                        : "";
+
+
+                const vehicle =
+                    (
+                        getElement(
+                            "vehicle"
+                        )?.value || ""
+                    )
+                        .trim();
+
+
+                const area =
+                    (
+                        getElement(
+                            "area"
+                        )?.value || ""
+                    )
+                        .trim();
+
+
+                const address =
+                    (
+                        getElement(
+                            "address"
+                        )?.value || ""
+                    )
+                        .trim();
+
+
+                const date =
+                    dateInput
+                        ? dateInput.value
+                        : "";
+
+
+                const time =
+                    (
+                        getElement(
+                            "time"
+                        )?.value || ""
+                    );
+
+
+                const notes =
+                    (
+                        getElement(
+                            "notes"
+                        )?.value || ""
+                    )
+                        .trim();
+
+
+                /*
+                CREATE BOOKING
+                */
+
+                const booking = {
+
+                    appointmentNumber:
+                        createAppointmentNumber(),
+
+                    customerName:
+                        customerName,
+
+                    customerPhone:
+                        customerPhone,
+
+                    serviceType:
+                        service,
+
+                    vehicle:
+                        vehicle,
+
+                    area:
+                        area,
+
+                    address:
+                        address,
+
+                    date:
+                        date,
+
+                    time:
+                        time,
+
+                    notes:
+                        notes,
+
+                    status:
+                        "Pending",
+
+                    servicePrice:
+                        0,
+
+                    tip:
+                        0,
+
+                    total:
+                        0,
+
+                    createdAt:
+                        new Date()
+                            .toISOString()
+
+                };
+
+
+                /*
+                SAVE TO LOCAL STORAGE
+                */
+
+                try {
+
+                    localStorage.setItem(
+                        "greencityBooking",
+                        JSON.stringify(
+                            booking
+                        )
+                    );
+
+                } catch (error) {
+
+                    console.warn(
+                        "GreenCity local storage error:",
+                        error
+                    );
+
+                }
+
+
+                /*
+                SAVE TO SUPABASE
+                */
+
+                const databaseResult =
+                    await saveBookingToSupabase(
+                        booking
+                    );
+
+
+                /*
+                CREATE WHATSAPP MESSAGE
+                */
+
+                const message =
+                    createWhatsAppMessage(
+                        booking
+                    );
+
+
+                /*
+                DATABASE ERROR
+                */
+
+                if (
+                    !databaseResult.success
+                ) {
+
+                    console.warn(
+                        "GreenCity booking was not saved to Supabase.",
+                        databaseResult.error
+                    );
+
+                }
+
+
+                /*
+                OPEN WHATSAPP
+                */
+
+                const opened =
+                    openWhatsApp(
+                        message
+                    );
+
+
+                if (!opened) {
+
+                    if (
+                        bookingButton
+                    ) {
+
+                        bookingButton.disabled =
+                            false;
+
+                        bookingButton.textContent =
+                            "Book Now on WhatsApp";
+
+                    }
+
+                    return;
+
+                }
+
+
+                /*
+                SUCCESS MESSAGE
+                */
+
+                const successMessage =
+                    getElement(
+                        "successMessage"
+                    );
+
+                if (
+                    successMessage
+                ) {
+
+                    successMessage.style.display =
+                        "block";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*
+    =======================================================
+    START GREENCITY
+    =======================================================
+    */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            configurationIsReady();
+
+            supabaseClient =
+                createSupabaseClient();
+
+            setupBookingForm();
+
+        }
     );
 
-    if (message) {
-      message.textContent =
-        "Booking prepared. Opening WhatsApp…";
-      message.className = "notice success";
-    }
 
-    /* =========================
-       OPEN WHATSAPP
-       ========================= */
-    const whatsappURL =
-      "https://wa.me/" +
-      whatsappNumber +
-      "?text=" +
-      encodeURIComponent(whatsappMessage);
-
-    window.location.href = whatsappURL;
-  });
-});
+})();
