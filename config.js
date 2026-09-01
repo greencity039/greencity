@@ -26,7 +26,7 @@ window.GREENCITY_CONFIG = {
      * 27 + number without the first 0
      */
     WHATSAPP_NUMBER:
-        "27664926146",
+        "0664926146",
 
     /*
      * Database table used for bookings.
