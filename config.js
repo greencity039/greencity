@@ -15,10 +15,10 @@ window.GREENCITY_CONFIG = {
 
     /*
      * Supabase Publishable Key
-     * CHANGE: PASTE_YOUR_sb_publishable__Voo04T5sGBgR-bpuxRcbg_aytRRWtx
+     * CHANGE: paste your sb_publishable_... key here.
      */
     SUPABASE_ANON_KEY:
-        "PASTE_YOUR_SB_PUBLISHABLE_KEY_HERE",
+        "PASTE_YOUR_sb_publishable__Voo04T5sGBgR-bpuxRcbg_aytRRWtx
 
     /*
      * GreenCity WhatsApp number
