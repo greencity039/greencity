@@ -3,348 +3,441 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Book GreenCity bin cleaning or mobile car wash services.">
+
   <title>Book a Service | GreenCity</title>
+  <meta name="description" content="Book a GreenCity mobile car wash or wheelie bin cleaning service.">
+
+  <link rel="icon" type="image/png" href="images/greencity-logo.png">
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="booking-page">
+<body>
 
-<header class="site-header booking-header">
-  <a class="brand" href="index.html">
-    <img
-      src="images/greencity-logo.png"
-      alt="GreenCity logo"
-      class="brand-logo"
-    >
-    <span class="brand-name">GREENCITY</span>
-  </a>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
 
-  <a href="index.html" class="header-book">Back Home</a>
-</header>
+      <a href="index.html" class="brand">
+        <img
+          src="images/greencity-logo.png"
+          alt="GreenCity"
+          class="brand-logo"
+        >
+      </a>
 
+      <a href="index.html" class="back-link">
+        ← Back Home
+      </a>
 
-<main class="booking-main">
-
-  <div class="booking-intro">
-    <p class="eyebrow">GREENCITY SERVICES</p>
-
-    <h1>Book your <span>service.</span></h1>
-
-    <p>
-      Tell us what you need, where you are and when you would like us to come.
-      Your request will be sent directly to GreenCity on WhatsApp.
-    </p>
-  </div>
+    </div>
+  </header>
 
 
-  <div class="booking-card">
+  <!-- BOOKING -->
+  <main>
 
-    <form id="bookingForm" novalidate>
+    <section class="page-hero">
+      <div class="container">
 
-      <!-- =========================================
-           01 — CUSTOMER DETAILS
-           ========================================= -->
+        <p class="eyebrow">GREENCITY SERVICES</p>
 
-      <div class="form-section">
+        <h1>Book a Service</h1>
 
-        <div class="form-section-title">
-          <span>01</span>
-          <h2>Your details</h2>
+        <p class="page-intro">
+          Tell us what you need and where you are. Your booking request
+          will open directly in WhatsApp so our team can confirm your appointment.
+        </p>
+
+      </div>
+    </section>
+
+
+    <section class="booking-section">
+      <div class="container">
+
+        <div class="booking-card">
+
+          <form id="bookingForm">
+
+            <!-- CUSTOMER -->
+            <div class="form-section">
+
+              <div class="form-section-heading">
+                <span>01</span>
+                <div>
+                  <h2>Your Details</h2>
+                  <p>How can we contact you?</p>
+                </div>
+              </div>
+
+
+              <div class="form-grid">
+
+                <div class="form-group">
+                  <label for="customerName">
+                    Full Name
+                  </label>
+
+                  <input
+                    type="text"
+                    id="customerName"
+                    name="customerName"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                  >
+                </div>
+
+
+                <div class="form-group">
+                  <label for="customerPhone">
+                    WhatsApp Number
+                  </label>
+
+                  <input
+                    type="tel"
+                    id="customerPhone"
+                    name="customerPhone"
+                    placeholder="e.g. 066 123 4567"
+                    autocomplete="tel"
+                    required
+                  >
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- SERVICE -->
+            <div class="form-section">
+
+              <div class="form-section-heading">
+                <span>02</span>
+                <div>
+                  <h2>Choose a Service</h2>
+                  <p>Select the service you require.</p>
+                </div>
+              </div>
+
+
+              <div class="service-options">
+
+                <label class="service-option">
+
+                  <input
+                    type="radio"
+                    name="service"
+                    value="Wheelie Bin Cleaning"
+                    required
+                  >
+
+                  <span class="service-option-content">
+                    <strong>Wheelie Bin Cleaning</strong>
+                    <small>
+                      Professional cleaning and sanitising of your wheelie bin.
+                    </small>
+                  </span>
+
+                </label>
+
+
+                <label class="service-option">
+
+                  <input
+                    type="radio"
+                    name="service"
+                    value="Mobile Car Wash"
+                  >
+
+                  <span class="service-option-content">
+                    <strong>Mobile Car Wash</strong>
+                    <small>
+                      Convenient professional car cleaning at your location.
+                    </small>
+                  </span>
+
+                </label>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="itemDetails">
+                  Vehicle / Bin Details
+                </label>
+
+                <input
+                  type="text"
+                  id="itemDetails"
+                  name="itemDetails"
+                  placeholder="e.g. Toyota Polo / 240L wheelie bin"
+                  required
+                >
+
+              </div>
+
+            </div>
+
+
+            <!-- LOCATION -->
+            <div class="form-section">
+
+              <div class="form-section-heading">
+                <span>03</span>
+                <div>
+                  <h2>Your Location</h2>
+                  <p>Where should we provide the service?</p>
+                </div>
+              </div>
+
+
+              <div class="form-grid">
+
+                <div class="form-group">
+
+                  <label for="area">
+                    Area / Town
+                  </label>
+
+                  <input
+                    type="text"
+                    id="area"
+                    name="area"
+                    placeholder="e.g. Mbombela"
+                    required
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="address">
+                    Service Address
+                  </label>
+
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="Street / residential address"
+                    autocomplete="street-address"
+                    required
+                  >
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- APPOINTMENT -->
+            <div class="form-section">
+
+              <div class="form-section-heading">
+                <span>04</span>
+                <div>
+                  <h2>Appointment</h2>
+                  <p>Choose your preferred date and time.</p>
+                </div>
+              </div>
+
+
+              <div class="form-grid">
+
+                <div class="form-group">
+
+                  <label for="date">
+                    Preferred Date
+                  </label>
+
+                  <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    required
+                  >
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label for="time">
+                    Preferred Time
+                  </label>
+
+                  <select
+                    id="time"
+                    name="time"
+                    required
+                  >
+
+                    <option value="">
+                      Select a time
+                    </option>
+
+                    <option value="08:00">
+                      08:00
+                    </option>
+
+                    <option value="09:00">
+                      09:00
+                    </option>
+
+                    <option value="10:00">
+                      10:00
+                    </option>
+
+                    <option value="11:00">
+                      11:00
+                    </option>
+
+                    <option value="12:00">
+                      12:00
+                    </option>
+
+                    <option value="13:00">
+                      13:00
+                    </option>
+
+                    <option value="14:00">
+                      14:00
+                    </option>
+
+                    <option value="15:00">
+                      15:00
+                    </option>
+
+                    <option value="16:00">
+                      16:00
+                    </option>
+
+                    <option value="17:00">
+                      17:00
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="notes">
+                  Additional Notes
+                </label>
+
+                <textarea
+                  id="notes"
+                  name="notes"
+                  rows="5"
+                  placeholder="Anything else we should know?"
+                ></textarea>
+
+              </div>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+            <div
+              id="bookingMessage"
+              class="booking-message"
+              role="alert"
+              aria-live="polite"
+              hidden
+            ></div>
+
+
+            <!-- SUBMIT -->
+            <div class="booking-submit">
+
+              <button
+                type="submit"
+                id="bookBtn"
+                class="btn btn-primary"
+              >
+                Book Now on WhatsApp
+              </button>
+
+              <p class="booking-note">
+                Your request will open in WhatsApp.
+                Your appointment is only confirmed once GreenCity confirms it.
+              </p>
+
+            </div>
+
+          </form>
+
         </div>
 
-        <div class="form-grid">
+      </div>
+    </section>
 
-          <div class="form-group">
-            <label for="customerName">
-              Full Name *
-            </label>
-
-            <input
-              id="customerName"
-              name="customerName"
-              type="text"
-              autocomplete="name"
-              required
-            >
-          </div>
+  </main>
 
 
-          <div class="form-group">
-            <label for="customerPhone">
-              WhatsApp Number *
-            </label>
+  <!-- FOOTER -->
+  <footer class="site-footer">
 
-            <input
-              id="customerPhone"
-              name="customerPhone"
-              type="tel"
-              autocomplete="tel"
-              placeholder="e.g. 072 123 4567"
-              required
-            >
-          </div>
+    <div class="container">
+
+      <div class="footer-inner">
+
+        <div>
+          <strong>GreenCity</strong>
+          <p>
+            Cleaner Spaces. Better Living.
+          </p>
+        </div>
+
+
+        <div class="footer-links">
+
+          <a href="privacy.html">
+            Privacy
+          </a>
+
+          <a href="cookies.html">
+            Cookies
+          </a>
+
+          <a href="terms.html">
+            Terms
+          </a>
+
+          <a href="returns.html">
+            Returns & Refunds
+          </a>
 
         </div>
 
       </div>
 
 
-      <!-- =========================================
-           02 — SERVICE
-           ========================================= -->
+      <div class="footer-bottom">
 
-      <div class="form-section">
-
-        <div class="form-section-title">
-          <span>02</span>
-          <h2>Choose a service</h2>
-        </div>
-
-
-        <div class="service-options">
-
-          <label class="service-option">
-
-            <input
-              type="radio"
-              name="service"
-              value="Wheelie Bin Cleaning"
-              required
-            >
-
-            <span>
-              <strong>Bin Cleaning</strong>
-
-              <small>
-                Professional household or business bin cleaning.
-              </small>
-            </span>
-
-          </label>
-
-
-          <label class="service-option">
-
-            <input
-              type="radio"
-              name="service"
-              value="Mobile Car Wash"
-            >
-
-            <span>
-              <strong>Mobile Car Wash</strong>
-
-              <small>
-                We come to your home, workplace or agreed location.
-              </small>
-            </span>
-
-          </label>
-
-        </div>
+        <p>
+          © <span id="footerYear"></span> GreenCity.
+          All rights reserved.
+        </p>
 
       </div>
 
+    </div>
 
-      <!-- =========================================
-           03 — SERVICE DETAILS
-           ========================================= -->
+  </footer>
 
-      <div class="form-section">
 
-        <div class="form-section-title">
-          <span>03</span>
-          <h2>Service details</h2>
-        </div>
-
-
-        <div class="form-grid">
-
-          <div class="form-group">
-
-            <label for="itemDetails">
-              Car / Bin Details *
-            </label>
-
-            <input
-              id="itemDetails"
-              name="itemDetails"
-              placeholder="e.g. Toyota Corolla / 240L bin"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="area">
-              Area / Town *
-            </label>
-
-            <input
-              id="area"
-              name="area"
-              placeholder="e.g. Bushbuckridge"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group full">
-
-            <label for="address">
-              Service Address *
-            </label>
-
-            <input
-              id="address"
-              name="address"
-              autocomplete="street-address"
-              required
-            >
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =========================================
-           04 — APPOINTMENT
-           ========================================= -->
-
-      <div class="form-section">
-
-        <div class="form-section-title">
-          <span>04</span>
-          <h2>Preferred appointment</h2>
-        </div>
-
-
-        <div class="form-grid">
-
-          <div class="form-group">
-
-            <label for="date">
-              Preferred Date *
-            </label>
-
-            <input
-              id="date"
-              name="date"
-              type="date"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="time">
-              Preferred Time *
-            </label>
-
-            <input
-              id="time"
-              name="time"
-              type="time"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group full">
-
-            <label for="notes">
-              Additional Notes
-            </label>
-
-            <textarea
-              id="notes"
-              name="notes"
-              rows="4"
-              placeholder="Anything GreenCity should know?"
-            ></textarea>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =========================================
-           BOOKING MESSAGE
-           ========================================= -->
-
-      <div
-        id="bookingMessage"
-        class="notice"
-        role="status"
-        aria-live="polite"
-      ></div>
-
-
-      <!-- =========================================
-           SUBMIT
-           ========================================= -->
-
-      <button
-        id="bookBtn"
-        class="btn btn-primary"
-        type="submit"
-      >
-        Book Now on WhatsApp
-      </button>
-
-    </form>
-
-  </div>
-
-</main>
-
-
-<!-- =============================================
-     FOOTER
-     ============================================= -->
-
-<footer class="footer simple-footer">
-
-  <div class="footer-bottom">
-
-    <span>
-      © <span data-year></span> GreenCity.
-    </span>
-
-    <a href="index.html">
-      Home
-    </a>
-
-  </div>
-
-</footer>
-
-
-<!-- =============================================
-     JAVASCRIPT
-     
-     IMPORTANT:
-     Only ONE booking script is used.
-     ============================================= -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="config.js"></script>
-
-<script src="supabase-config.js"></script>
-
-<script src="script.js"></script>
+  <!-- ONLY THE GREEN CITY CONFIG + MAIN SCRIPT -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
 
 </body>
-              </html>
+</html>
