@@ -4,7 +4,7 @@
     const config = window.GREENCITY_CONFIG || {};
 
     const WHATSAPP_NUMBER =
-        String(config.WHATSAPP_NUMBER || "27664926146")
+        String(config.whatsappNumber || "27664926146")
             .replace(/\D/g, "");
 
 

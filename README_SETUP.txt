@@ -28,12 +28,16 @@ GITHUB PAGES:
 3. Enable GitHub Pages from main / root.
 
 CONFIGURATION (config.js):
-- WHATSAPP_NUMBER: the number that receives bookings.
-- PRICE_ACCESS_CODE: the code you give customers on WhatsApp
-  so they can view prices on price.html.
-- PRICES: the list shown once the code is entered. This is
-  the only place prices live — edit this array to update
-  pricing anywhere on the site.
+- whatsappNumber: the number that receives bookings.
+- priceAccessCode: the code you give customers on WhatsApp so
+  they can view prices on price.html.
+- pricing: the full private price catalogue — car wash tiers
+  (Essential / Full / Premium) per vehicle type, wheelie bin
+  sizes (single + monthly), travel/call-out fees, optional
+  add-ons, and monthly plans. This is the ONLY place prices
+  live — price.html renders everything from this object
+  automatically, so changing a number here updates the whole
+  site with no other file to touch.
 
 BOOKING FLOW:
 Customer -> booking.html -> fills details -> WhatsApp opens
@@ -42,10 +46,14 @@ manually on WhatsApp.
 
 PRIVATE PRICE FLOW:
 GreenCity sends the customer the access code on WhatsApp.
-Customer -> price.html -> enters the code -> prices appear.
-This is a simple visibility gate, not real security — anyone
-who has the code, or who reads the page source, can see the
-prices. It only keeps prices off the public-facing pages.
+Customer -> price.html -> enters the code -> the full pricing
+catalogue appears (car wash tiers, bin cleaning, travel fees,
+add-ons, monthly plans), all generated from config.js. The
+unlock is remembered for that browser tab's session, so the
+customer isn't asked for the code again on that visit. This is
+a simple visibility gate, not real security — anyone who has
+the code, or who reads the page source, can see the prices. It
+only keeps prices off the public-facing pages.
 
 CONFIRMATION / RECEIPT FLOW:
 After GreenCity confirms a booking on WhatsApp, open
