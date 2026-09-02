@@ -37,57 +37,47 @@
         return "GC-" + Date.now();
     }
 
+async function saveBooking(booking) {
 
-    async function saveBooking(booking) {
+    const client = window.greenCitySupabase;
 
-        if (
-            !SUPABASE_URL ||
-            !SUPABASE_ANON_KEY ||
-            typeof window.supabase === "undefined"
-        ) {
-            console.warn(
-                "GreenCity: Supabase connection is unavailable."
-            );
+    if (!client) {
+        console.error("GreenCity: Supabase client is not available.");
+        return false;
+    }
 
-            return false;
-        }
+    try {
 
-        try {
+        const { error } = await client
+            .from("bookings")
+            .insert([booking]);
 
-            const client =
-                window.supabase.createClient(
-                    SUPABASE_URL,
-                    SUPABASE_ANON_KEY
-                );
-
-            const { error } =
-                await client
-                    .from(BOOKING_TABLE)
-                    .insert([booking]);
-
-            if (error) {
-
-                console.error(
-                    "GreenCity Supabase error:",
-                    error
-                );
-
-                return false;
-            }
-
-            return true;
-
-        } catch (error) {
-
+        if (error) {
             console.error(
-                "GreenCity database error:",
+                "GreenCity: Booking could not be saved:",
                 error
             );
 
             return false;
         }
-    }
 
+        console.log(
+            "GreenCity: Booking saved successfully."
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "GreenCity: Unexpected database error:",
+            error
+        );
+
+        return false;
+    }
+}
+    
 
     function sendToWhatsApp(booking) {
 
