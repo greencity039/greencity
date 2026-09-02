@@ -7,82 +7,120 @@
         String(config.WHATSAPP_NUMBER || "27664926146")
             .replace(/\D/g, "");
 
-    const SUPABASE_URL =
-        config.SUPABASE_URL || "";
 
-    const SUPABASE_ANON_KEY =
-        config.SUPABASE_ANON_KEY || "";
+    /* =========================================================
+       FOOTER YEAR
+       Fills every [data-year] element with the current year.
+       ========================================================= */
+    function fillYear() {
+        const yearElements = document.querySelectorAll("[data-year]");
+        yearElements.forEach(function (element) {
+            element.textContent = new Date().getFullYear();
+        });
+    }
 
-    const BOOKING_TABLE =
-        config.BOOKING_TABLE || "bookings";
+
+    /* =========================================================
+       MOBILE NAVIGATION
+       Toggles the header nav on small screens.
+       ========================================================= */
+    function initMobileMenu() {
+        const toggle = document.querySelector("[data-menu-toggle]");
+        const menu = document.querySelector("[data-mobile-menu]");
+
+        if (!toggle || !menu) {
+            return;
+        }
+
+        toggle.addEventListener("click", function () {
+            const isOpen = menu.classList.toggle("active");
+            toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        });
+
+        menu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                menu.classList.remove("active");
+                toggle.setAttribute("aria-expanded", "false");
+            });
+        });
+    }
 
 
+    /* =========================================================
+       COOKIE CONSENT
+       Remembers the customer's choice in localStorage so the
+       banner only needs to be answered once per browser.
+       ========================================================= */
+    function initCookieConsent() {
+        const banner = document.getElementById("cookieBanner");
+
+        if (!banner) {
+            return;
+        }
+
+        const STORAGE_KEY = "greencity_cookie_consent";
+        const acceptBtn = document.getElementById("acceptCookies");
+        const necessaryBtn = document.getElementById("necessaryCookies");
+
+        function hideBanner() {
+            banner.classList.remove("show");
+        }
+
+        function setConsent(value) {
+            try {
+                localStorage.setItem(STORAGE_KEY, value);
+            } catch (error) {
+                console.warn("GreenCity: could not save cookie preference.", error);
+            }
+            hideBanner();
+        }
+
+        let existingConsent = null;
+        try {
+            existingConsent = localStorage.getItem(STORAGE_KEY);
+        } catch (error) {
+            existingConsent = null;
+        }
+
+        if (!existingConsent) {
+            banner.classList.add("show");
+        }
+
+        if (acceptBtn) {
+            acceptBtn.addEventListener("click", function () {
+                setConsent("all");
+            });
+        }
+
+        if (necessaryBtn) {
+            necessaryBtn.addEventListener("click", function () {
+                setConsent("necessary");
+            });
+        }
+    }
+
+
+    /* =========================================================
+       BOOKING FORM -> WHATSAPP
+       ========================================================= */
     function getValue(id) {
         const element = document.getElementById(id);
         return element ? element.value.trim() : "";
     }
 
-
     function getSelectedService() {
-        const selected =
-            document.querySelector(
-                'input[name="service"]:checked'
-            );
-
+        const selected = document.querySelector('input[name="service"]:checked');
         return selected ? selected.value : "";
     }
 
-
     function makeBookingNumber() {
-        return "GC-" + Date.now();
+        // Short, human-friendly reference e.g. GC-482731
+        const random = Math.floor(100000 + Math.random() * 900000);
+        return "GC-" + random;
     }
-
-async function saveBooking(booking) {
-
-    const client = window.greenCitySupabase;
-
-    if (!client) {
-        console.error("GreenCity: Supabase client is not available.");
-        return false;
-    }
-
-    try {
-
-        const { error } = await client
-            .from("bookings")
-            .insert([booking]);
-
-        if (error) {
-            console.error(
-                "GreenCity: Booking could not be saved:",
-                error
-            );
-
-            return false;
-        }
-
-        console.log(
-            "GreenCity: Booking saved successfully."
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "GreenCity: Unexpected database error:",
-            error
-        );
-
-        return false;
-    }
-}
-    
 
     function sendToWhatsApp(booking) {
-
-        const number =
-            WHATSAPP_NUMBER || "27664926146";
+        const number = WHATSAPP_NUMBER || "27664926146";
 
         const message =
 `🌿 GREENCITY BOOKING REQUEST
@@ -96,222 +134,120 @@ WhatsApp: ${booking.customer_phone}
 SERVICE
 ${booking.service}
 
-SERVICE DETAILS
+VEHICLE / BIN DETAILS
 ${booking.item_details}
 
 LOCATION
 Area: ${booking.area}
-Address: ${booking.address}
+Service Address: ${booking.address}
 
 APPOINTMENT
-Date: ${booking.appointment_date}
-Time: ${booking.appointment_time}
+Preferred Date: ${booking.appointment_date}
+Preferred Time: ${booking.appointment_time}
 
-NOTES
+ADDITIONAL NOTES
 ${booking.notes || "None"}
 
 STATUS
-Pending`;
+PENDING CONFIRMATION`;
 
         const whatsappURL =
-            "https://wa.me/" +
-            number +
-            "?text=" +
-            encodeURIComponent(message);
+            "https://wa.me/" + number + "?text=" + encodeURIComponent(message);
 
         window.location.href = whatsappURL;
     }
 
-
-    async function handleBooking(event) {
-
+    function handleBooking(event) {
         event.preventDefault();
 
-        const form =
-            document.getElementById("bookingForm");
-
-        const button =
-            document.getElementById("bookBtn");
-
-        const messageBox =
-            document.getElementById("bookingMessage");
-
+        const form = document.getElementById("bookingForm");
+        const button = document.getElementById("bookBtn");
+        const messageBox = document.getElementById("bookingMessage");
 
         if (!form) {
             return;
         }
-
 
         if (!form.checkValidity()) {
-
             form.reportValidity();
-
             return;
         }
 
-
-        if (button) {
-
-            button.disabled = true;
-
-            button.textContent =
-                "Processing...";
-
-        }
-
-
         const booking = {
-
-            appointment_number:
-                makeBookingNumber(),
-
-            customer_name:
-                getValue("customerName"),
-
-            customer_phone:
-                getValue("customerPhone"),
-
-            service:
-                getSelectedService(),
-
-            item_details:
-                getValue("itemDetails"),
-
-            area:
-                getValue("area"),
-
-            address:
-                getValue("address"),
-
-            appointment_date:
-                getValue("date"),
-
-            appointment_time:
-                getValue("time"),
-
-            notes:
-                getValue("notes"),
-
-            status:
-                "Pending",
-
-            created_at:
-                new Date().toISOString()
+            appointment_number: makeBookingNumber(),
+            customer_name: getValue("customerName"),
+            customer_phone: getValue("customerPhone"),
+            service: getSelectedService(),
+            item_details: getValue("itemDetails"),
+            area: getValue("area"),
+            address: getValue("address"),
+            appointment_date: getValue("date"),
+            appointment_time: getValue("time"),
+            notes: getValue("notes")
         };
 
-
-        /*
-         * Save to Supabase first.
-         */
-
-        const saved =
-            await saveBooking(booking);
-
-
-        /*
-         * Tell the user if the database
-         * accepted the booking.
-         */
-
-        if (messageBox) {
-
-            if (saved) {
-
-                messageBox.textContent =
-                    "Booking received. Opening WhatsApp...";
-
-            } else {
-
-                messageBox.textContent =
-                    "Opening WhatsApp...";
-
-            }
+        if (button) {
+            button.disabled = true;
+            button.textContent = "Opening WhatsApp…";
         }
 
+        if (messageBox) {
+            messageBox.hidden = false;
+            messageBox.textContent =
+                "Your reference is " + booking.appointment_number +
+                ". Opening WhatsApp so you can send your request to GreenCity…";
+        }
 
-        /*
-         * Then open WhatsApp.
-         */
+        // Give the user a moment to see the message, then hand off to WhatsApp.
+        window.setTimeout(function () {
+            sendToWhatsApp(booking);
 
-        sendToWhatsApp(booking);
-
+            // Re-enable the button in case WhatsApp does not open
+            // (e.g. no WhatsApp installed), so the customer isn't stuck.
+            window.setTimeout(function () {
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = "Book Now on WhatsApp";
+                }
+            }, 4000);
+        }, 400);
     }
 
-
-    function start() {
-
-        const form =
-            document.getElementById("bookingForm");
+    function initBookingForm() {
+        const form = document.getElementById("bookingForm");
 
         if (!form) {
             return;
         }
 
-
-        const date =
-            document.getElementById("date");
-
+        const date = document.getElementById("date");
 
         if (date) {
-
-            const today =
-                new Date();
-
-            const year =
-                today.getFullYear();
-
-            const month =
-                String(
-                    today.getMonth() + 1
-                ).padStart(2, "0");
-
-            const day =
-                String(
-                    today.getDate()
-                ).padStart(2, "0");
-
-            date.min =
-                `${year}-${month}-${day}`;
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+            date.min = `${year}-${month}-${day}`;
         }
 
-
-        form.addEventListener(
-            "submit",
-            handleBooking
-        );
-
-
-        const yearElements =
-            document.querySelectorAll(
-                "[data-year]"
-            );
-
-        yearElements.forEach(
-            function (element) {
-
-                element.textContent =
-                    new Date().getFullYear();
-
-            }
-        );
-
+        form.addEventListener("submit", handleBooking);
     }
 
 
-    if (
-        document.readyState ===
-        "loading"
-    ) {
+    /* =========================================================
+       START
+       ========================================================= */
+    function start() {
+        fillYear();
+        initMobileMenu();
+        initCookieConsent();
+        initBookingForm();
+    }
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            start
-        );
-
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", start);
     } else {
-
         start();
-
     }
 
 })();

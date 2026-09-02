@@ -3,74 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GreenCity Admin</title>
+<meta name="robots" content="noindex">
+<title>Confirmation Tool | GreenCity</title>
+<link rel="icon" type="image/png" href="images/greencity-logo.png">
 <link rel="stylesheet" href="style.css">
+<style>
+  /* Internal tool only — kept in this file so it stays out of style.css */
+  .confirm-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:900px){.confirm-layout{grid-template-columns:1fr}}
+  .confirm-preview{background:#fff;border:1px solid var(--border);border-radius:18px;padding:30px}
+  .confirm-preview .slip-brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .confirm-preview .slip-brand img{width:32px;height:32px;object-fit:contain}
+  .confirm-preview .slip-brand strong{font-family:var(--display);font-size:20px;letter-spacing:-.03em}
+  .confirm-preview h2{font-family:var(--display);font-size:26px;margin:0 0 4px}
+  .confirm-preview .slip-ref{color:var(--muted);font-size:12px;margin:0 0 20px}
+  .slip-row{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
+  .slip-row:last-of-type{border-bottom:0}
+  .slip-row span:first-child{color:var(--muted)}
+  .slip-status{display:inline-block;margin-top:16px;padding:8px 14px;border-radius:999px;background:#e9f7df;color:#22530e;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .slip-status.pending{background:#fdf3d9;color:#8a5a00}
+  .slip-terms{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:11px;line-height:1.6}
+  @media print{
+    .site-header, .private-main > .eyebrow, .confirm-form, .print-btn, .site-footer, .no-print{display:none!important}
+    .private-main{padding:0}
+    .confirm-layout{display:block}
+    .confirm-preview{border:0;padding:0}
+    body{background:#fff}
+  }
+</style>
 </head>
 <body>
-<header class="site-header solid-header">
+<header class="site-header solid-header no-print">
   <a class="brand dark-brand" href="index.html">
     <img src="images/greencity-logo.png" alt="GreenCity logo" class="brand-logo">
-    <span class="brand-name">GREENCITY ADMIN</span>
+    <span class="brand-name">GREENCITY</span>
   </a>
   <a href="index.html" class="header-book">Public Site</a>
 </header>
 
-<main class="private-main">
-  <div class="private-card wide">
-    <p class="eyebrow">GREEN CITY ADMIN</p>
-    <h1>Bookings.</h1>
-    <p>This page is for the GreenCity owner. Secure Supabase Auth should be enabled before using it for private customer management.</p>
-    <button id="loadBookings" class="btn btn-primary">Load Bookings</button>
-    <div id="adminMessage" class="notice"></div>
-    <div id="bookingList"></div>
+<main class="private-main" style="max-width:1100px">
+  <p class="eyebrow">INTERNAL USE ONLY</p>
+  <h1 style="font-size:clamp(2.2rem,5vw,3.2rem)">Confirmation tool.</h1>
+  <p style="color:var(--muted);margin-bottom:30px">
+    After you've confirmed a booking with a customer on WhatsApp, fill in the
+    final details below to generate a professional confirmation you can print
+    or save as a PDF and send back to the customer. Nothing here is saved or
+    sent automatically — this page only builds the document.
+  </p>
+
+  <div class="confirm-layout">
+
+    <form class="confirm-form" id="confirmForm">
+      <div class="form-group"><label for="cRef">Appointment Reference</label>
+        <input id="cRef" placeholder="GC-482731" required></div>
+
+      <div class="form-group"><label for="cName">Customer Name</label>
+        <input id="cName" required></div>
+
+      <div class="form-group"><label for="cPhone">Customer WhatsApp Number</label>
+        <input id="cPhone" required></div>
+
+      <div class="form-group"><label for="cService">Service</label>
+        <select id="cService" required>
+          <option value="">Select a service</option>
+          <option>Wheelie Bin Cleaning</option>
+          <option>Mobile Car Wash</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label for="cItem">Vehicle / Bin Details</label>
+        <input id="cItem" required></div>
+
+      <div class="form-group"><label for="cArea">Area</label>
+        <input id="cArea" required></div>
+
+      <div class="form-group"><label for="cAddress">Service Address</label>
+        <input id="cAddress" required></div>
+
+      <div class="form-group"><label for="cDate">Confirmed Date</label>
+        <input id="cDate" type="date" required></div>
+
+      <div class="form-group"><label for="cTime">Confirmed Time</label>
+        <input id="cTime" type="time" required></div>
+
+      <div class="form-group"><label for="cPrice">Confirmed Price (ZAR)</label>
+        <input id="cPrice" type="number" min="0" step="1" placeholder="e.g. 250" required></div>
+
+      <div class="form-group"><label for="cStatus">Booking Status</label>
+        <select id="cStatus">
+          <option value="CONFIRMED">Confirmed</option>
+          <option value="PENDING">Pending Confirmation</option>
+        </select>
+      </div>
+
+      <div class="form-group"><label for="cNotes">Notes / Terms shown on the confirmation</label>
+        <textarea id="cNotes" rows="3">Please be available at the service address at the confirmed time. Reschedules require at least 24 hours' notice via WhatsApp.</textarea></div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:10px">Generate Confirmation</button>
+    </form>
+
+    <div class="confirm-preview" id="confirmPreview" hidden>
+      <div class="slip-brand">
+        <img src="images/greencity-logo.png" alt="GreenCity logo">
+        <strong>GREENCITY</strong>
+      </div>
+      <h2>Booking Confirmation</h2>
+      <p class="slip-ref" id="pRef"></p>
+
+      <div class="slip-row"><span>Customer</span><span id="pName"></span></div>
+      <div class="slip-row"><span>WhatsApp</span><span id="pPhone"></span></div>
+      <div class="slip-row"><span>Service</span><span id="pService"></span></div>
+      <div class="slip-row"><span>Vehicle / Bin</span><span id="pItem"></span></div>
+      <div class="slip-row"><span>Area</span><span id="pArea"></span></div>
+      <div class="slip-row"><span>Address</span><span id="pAddress"></span></div>
+      <div class="slip-row"><span>Date</span><span id="pDate"></span></div>
+      <div class="slip-row"><span>Time</span><span id="pTime"></span></div>
+      <div class="slip-row"><span>Price</span><span id="pPrice"></span></div>
+
+      <span class="slip-status" id="pStatus"></span>
+
+      <p class="slip-terms" id="pNotes"></p>
+
+      <button type="button" id="printBtn" class="btn btn-primary print-btn" style="margin-top:22px">
+        Print / Save as PDF
+      </button>
+    </div>
+
   </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
-<script src="supabase-config.js"></script>
+<script src="script.js"></script>
 <script>
-document.getElementById("loadBookings").addEventListener("click", async () => {
-  const db = window.greenCitySupabase;
-  const msg = document.getElementById("adminMessage");
-  const list = document.getElementById("bookingList");
+document.getElementById("confirmForm").addEventListener("submit", function (event) {
+  event.preventDefault();
 
-  if (!db) {
-    msg.textContent = "Supabase is not connected yet.";
-    msg.className = "notice error";
-    return;
-  }
+  function val(id) { return document.getElementById(id).value.trim(); }
 
-  const { data, error } = await db
-    .from("bookings")
-    .select("*")
-    .order("created_at", { ascending: false });
+  var price = Number(val("cPrice") || 0);
+  var status = val("cStatus") || "CONFIRMED";
 
-  if (error) {
-    msg.textContent = error.message;
-    msg.className = "notice error";
-    return;
-  }
+  document.getElementById("pRef").textContent = "Appointment: " + val("cRef");
+  document.getElementById("pName").textContent = val("cName");
+  document.getElementById("pPhone").textContent = val("cPhone");
+  document.getElementById("pService").textContent = val("cService");
+  document.getElementById("pItem").textContent = val("cItem");
+  document.getElementById("pArea").textContent = val("cArea");
+  document.getElementById("pAddress").textContent = val("cAddress");
+  document.getElementById("pDate").textContent = val("cDate");
+  document.getElementById("pTime").textContent = val("cTime");
+  document.getElementById("pPrice").textContent = "R" + price.toFixed(2);
+  document.getElementById("pNotes").textContent = val("cNotes");
 
-  msg.textContent = `${data.length} booking(s) loaded.`;
-  msg.className = "notice success";
+  var statusEl = document.getElementById("pStatus");
+  statusEl.textContent = status;
+  statusEl.className = "slip-status" + (status === "PENDING" ? " pending" : "");
 
-  list.innerHTML = data.length ? data.map(x => `
-    <div class="card admin-booking">
-      <h3>${escapeHtml(x.appointment_number)}</h3>
-      <p><b>${escapeHtml(x.customer_name)}</b> — ${escapeHtml(x.service_type)}</p>
-      <p>${escapeHtml(x.item_details)} · ${escapeHtml(x.area)}</p>
-      <p>${escapeHtml(x.preferred_date)} at ${escapeHtml(x.preferred_time)}</p>
-      <p>Status: <b>${escapeHtml(x.status)}</b></p>
-    </div>
-  `).join("") : '<div class="notice">No bookings yet.</div>';
+  var preview = document.getElementById("confirmPreview");
+  preview.hidden = false;
+  preview.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[ch]));
-}
+document.getElementById("printBtn").addEventListener("click", function () {
+  window.print();
+});
 </script>
 </body>
 </html>

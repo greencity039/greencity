@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Private Prices | GreenCity</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Private Prices | GreenCity</title>
+<link rel="icon" type="image/png" href="images/greencity-logo.png">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="site-header solid-header">
@@ -19,96 +21,105 @@
   <div class="private-card">
     <p class="eyebrow">PRIVATE CUSTOMER ACCESS</p>
     <h1>Price preview.</h1>
-    <p>Enter the private code GreenCity sent you on WhatsApp.</p>
+    <p>Enter the private code GreenCity sent you on WhatsApp to view current prices.</p>
 
-    <label for="accessCode">Secret access code</label>
+    <label for="accessCode">Private access code</label>
     <input id="accessCode" type="password" autocomplete="off" placeholder="Enter your code">
     <button id="unlockBtn" class="btn btn-primary">Unlock Prices</button>
 
-    <div id="priceMessage" class="notice"></div>
+    <div id="priceMessage" class="notice" role="alert" aria-live="polite"></div>
 
     <div id="priceSearch" class="hidden">
-      <label for="priceQuery">Type your car model or bin size</label>
-      <input id="priceQuery" placeholder="e.g. VW Polo / 240L">
-      <button id="findPriceBtn" class="btn btn-primary">Show Price</button>
+      <label for="priceQuery">Filter by vehicle or bin size (optional)</label>
+      <input id="priceQuery" placeholder="e.g. bin or wash">
+      <div id="priceResults"></div>
     </div>
-
-    <div id="priceResults"></div>
   </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<footer class="footer simple-footer">
+  <div class="footer-bottom">
+    <span>© <span data-year></span> GreenCity.</span>
+    <a href="index.html">Home</a>
+  </div>
+</footer>
+
 <script src="config.js"></script>
-<script src="supabase-config.js"></script>
+<script src="script.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const db = window.greenCitySupabase;
-  const code = document.getElementById("accessCode");
-  const unlock = document.getElementById("unlockBtn");
-  const search = document.getElementById("priceSearch");
-  const message = document.getElementById("priceMessage");
-  const query = document.getElementById("priceQuery");
-  const find = document.getElementById("findPriceBtn");
-  const results = document.getElementById("priceResults");
-  let verifiedCode = "";
+document.addEventListener("DOMContentLoaded", function () {
+  var config = window.GREENCITY_CONFIG || {};
+  var ACCESS_CODE = String(config.PRICE_ACCESS_CODE || "").trim();
+  var PRICES = Array.isArray(config.PRICES) ? config.PRICES : [];
 
-  unlock.addEventListener("click", async () => {
-    if (!db) {
-      message.textContent = "Supabase is not connected yet. Add the public keys to config.js.";
-      message.className = "notice error";
-      return;
-    }
-    const value = code.value.trim();
-    if (!value) return;
-
-    const { data, error } = await db.rpc("verify_price_code", { p_code: value });
-    if (error || !data) {
-      message.textContent = "Invalid or expired code.";
-      message.className = "notice error";
-      return;
-    }
-
-    verifiedCode = value;
-    code.classList.add("hidden");
-    unlock.classList.add("hidden");
-    search.classList.remove("hidden");
-    message.textContent = "Access granted.";
-    message.className = "notice success";
-  });
-
-  find.addEventListener("click", async () => {
-    if (!db || !verifiedCode) return;
-    const term = query.value.trim();
-    if (!term) return;
-
-    const { data, error } = await db.rpc("get_vehicle_price", {
-      p_code: verifiedCode,
-      p_search: term
-    });
-
-    if (error) {
-      results.innerHTML = '<div class="notice error">Unable to retrieve the price.</div>';
-      return;
-    }
-
-    if (!data?.length) {
-      results.innerHTML = '<div class="notice">No matching price found. Check the vehicle name or bin size.</div>';
-      return;
-    }
-
-    results.innerHTML = data.map(item => `
-      <div class="price-result card">
-        <span>${escapeHtml(item.item_name)}</span>
-        <strong>R${Number(item.price).toFixed(2)}</strong>
-      </div>
-    `).join("");
-  });
+  var codeInput = document.getElementById("accessCode");
+  var unlockBtn = document.getElementById("unlockBtn");
+  var message = document.getElementById("priceMessage");
+  var searchBox = document.getElementById("priceSearch");
+  var query = document.getElementById("priceQuery");
+  var results = document.getElementById("priceResults");
 
   function escapeHtml(value) {
-    return String(value).replace(/[&<>"']/g, ch => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    }[ch]));
+    return String(value).replace(/[&<>"']/g, function (ch) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch];
+    });
   }
+
+  function renderPrices(filter) {
+    var term = (filter || "").trim().toLowerCase();
+    var list = PRICES.filter(function (row) {
+      return !term || row.item.toLowerCase().indexOf(term) !== -1;
+    });
+
+    if (!list.length) {
+      results.innerHTML = '<div class="notice error">No matching prices found. Try a different search term.</div>';
+      return;
+    }
+
+    results.innerHTML = list.map(function (row) {
+      return (
+        '<div class="price-result card">' +
+          "<span>" + escapeHtml(row.item) + "</span>" +
+          "<strong>R" + Number(row.price).toFixed(2) + "</strong>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  unlockBtn.addEventListener("click", function () {
+    var value = codeInput.value.trim();
+
+    if (!value) {
+      message.textContent = "Please enter your access code.";
+      message.className = "notice error";
+      return;
+    }
+
+    if (!ACCESS_CODE || value.toLowerCase() !== ACCESS_CODE.toLowerCase()) {
+      message.textContent = "Invalid or incorrect access code.";
+      message.className = "notice error";
+      return;
+    }
+
+    codeInput.classList.add("hidden");
+    unlockBtn.classList.add("hidden");
+    document.querySelector('label[for="accessCode"]').classList.add("hidden");
+    searchBox.classList.remove("hidden");
+    message.textContent = "Access granted. Here are our current prices.";
+    message.className = "notice success";
+    renderPrices("");
+  });
+
+  codeInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      unlockBtn.click();
+    }
+  });
+
+  query.addEventListener("input", function () {
+    renderPrices(query.value);
+  });
 });
 </script>
 </body>
