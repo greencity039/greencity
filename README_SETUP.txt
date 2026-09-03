@@ -46,14 +46,21 @@ manually on WhatsApp.
 
 PRIVATE PRICE FLOW:
 GreenCity sends the customer the access code on WhatsApp.
-Customer -> price.html -> enters the code -> the full pricing
-catalogue appears (car wash tiers, bin cleaning, travel fees,
-add-ons, monthly plans), all generated from config.js. The
-unlock is remembered for that browser tab's session, so the
-customer isn't asked for the code again on that visit. This is
-a simple visibility gate, not real security — anyone who has
-the code, or who reads the page source, can see the prices. It
-only keeps prices off the public-facing pages.
+Customer -> price.html -> enters the code -> an interactive
+service selector appears (Essential / Full / Premium / Wheelie
+Bin Cleaning / Monthly Plans). The customer taps a service,
+picks their vehicle or bin size, types in their actual car
+name (or bin details), optionally adds add-ons and a travel
+band, then fills in their name/WhatsApp/area/address/date/time.
+A live receipt at the bottom recalculates the total on every
+change. Pressing "Book on WhatsApp" opens WhatsApp with the
+complete, itemised booking request pre-filled — this is the
+same booking channel as booking.html, just pre-filled from the
+pricing selector. A "Simple Form" link in the header still
+goes to booking.html for anyone who'd rather skip pricing and
+just fill in a plain form. This is a visibility gate, not real
+security — anyone with the code, or who reads the page source,
+can see the prices. It only keeps prices off the public pages.
 
 CONFIRMATION / RECEIPT FLOW:
 After GreenCity confirms a booking on WhatsApp, open

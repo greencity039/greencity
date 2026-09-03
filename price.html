@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="style.css">
 <style>
   /* Pricing-page-only layout — kept here so style.css stays lean */
-  .price-wrap{max-width:1000px;margin:auto;padding:70px 6vw 100px}
+  .price-wrap{max-width:1000px;margin:auto;padding:70px 6vw 140px}
   .price-lock{background:#fff;border:1px solid var(--border);border-radius:25px;padding:40px;max-width:560px;margin:0 auto}
   .price-lock h1{font-family:var(--display);font-size:clamp(2.6rem,6vw,4rem);letter-spacing:-.06em;line-height:.98;margin:0 0 16px}
   .price-lock label{display:block;margin:24px 0 8px}
@@ -17,60 +17,83 @@
   .price-catalogue{display:none}
   .price-catalogue.show{display:block}
 
-  .price-section{margin-top:56px}
-  .price-section:first-of-type{margin-top:0}
-  .price-section-title{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.04em;margin:0 0 6px}
-  .price-section-sub{color:var(--muted);font-size:14px;line-height:1.6;max-width:640px;margin:0 0 24px}
+  .intro-line{color:var(--muted);font-size:14px;line-height:1.6;max-width:640px;margin:0 0 28px}
 
-  .tier{background:#fff;border:1px solid var(--border);border-radius:20px;padding:26px;margin-bottom:20px}
-  .tier-head h3{font-family:var(--display);font-size:22px;margin:0 0 4px}
-  .tier-head p{color:var(--muted);font-size:13px;margin:0 0 14px;line-height:1.6}
-  .tier-includes{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-  .tier-includes span{background:var(--cream);border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:11px;color:var(--forest)}
-  .tier-note{font-size:12px;color:var(--muted);margin-top:14px;font-style:italic}
+  /* Category tabs */
+  .category-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:30px}
+  .category-tab{border:1px solid var(--border);background:#fff;border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;font-size:12px;font-weight:800;line-height:1.4;color:var(--forest)}
+  .category-tab.active{background:var(--forest);color:#fff;border-color:var(--forest)}
+  @media(max-width:800px){.category-tabs{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:480px){.category-tabs{grid-template-columns:repeat(2,1fr)}}
 
-  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .price-grid .price-cell{border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
-  .price-cell span{display:block;font-size:11px;color:var(--muted);margin-bottom:6px}
-  .price-cell strong{font-size:19px;font-family:var(--display)}
+  .panel{background:#fff;border:1px solid var(--border);border-radius:22px;padding:26px;margin-bottom:26px}
+  .panel h2{font-family:var(--display);font-size:26px;margin:0 0 4px}
+  .panel>.panel-desc{color:var(--muted);font-size:13px;margin:0 0 16px;line-height:1.6}
+  .includes-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .includes-row span{background:var(--cream);border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:11px}
+  .panel-note{font-size:12px;color:var(--muted);font-style:italic;margin-top:14px}
 
-  .bin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-  .bin-card{border:1px solid var(--border);border-radius:16px;padding:18px;background:#fff}
-  .bin-card h4{margin:0 0 10px;font-size:16px}
-  .bin-card .row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-top:1px solid var(--border)}
-  .bin-card .row:first-of-type{border-top:0}
-  .bin-card .row span:first-child{color:var(--muted)}
+  .option-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:640px){.option-grid{grid-template-columns:repeat(2,1fr)}}
+  .option-card{border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;background:#fafbf7}
+  .option-card span{display:block;font-size:11px;color:var(--muted);margin-bottom:6px}
+  .option-card strong{font-size:17px;font-family:var(--display)}
+  .option-card.selected{border-color:var(--emerald);background:#e9f7df}
+  .option-card.selected span{color:#22530e}
 
-  .travel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-  .travel-cell{border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;background:#fff}
-  .travel-cell span{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
-  .travel-cell strong{font-size:17px}
-
-  .addon-list{display:flex;flex-direction:column;gap:0;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden}
-  .addon-row{display:flex;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);font-size:13px}
-  .addon-row:last-child{border-bottom:0}
-  .addon-row strong{font-weight:800}
+  .bin-billing{display:flex;gap:10px;margin-top:16px}
+  .bin-billing button{flex:1;border:1px solid var(--border);background:#fafbf7;border-radius:12px;padding:12px;font-weight:800;font-size:12px;cursor:pointer;color:var(--forest)}
+  .bin-billing button.selected{background:var(--forest);color:#fff;border-color:var(--forest)}
 
   .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .plan-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:24px}
-  .plan-card h4{font-family:var(--display);font-size:20px;margin:0 0 6px}
-  .plan-card .plan-price{font-family:var(--display);font-size:28px;margin:0 0 10px}
-  .plan-card p{color:var(--muted);font-size:13px;line-height:1.6;margin:0}
+  @media(max-width:700px){.plan-grid{grid-template-columns:1fr}}
+  .plan-pick{border:1px solid var(--border);border-radius:18px;padding:22px;cursor:pointer;background:#fafbf7}
+  .plan-pick.selected{border-color:var(--emerald);background:#e9f7df}
+  .plan-pick h4{font-family:var(--display);font-size:19px;margin:0 0 6px}
+  .plan-pick .plan-price{font-family:var(--display);font-size:24px;margin:0 0 8px}
+  .plan-pick p{color:var(--muted);font-size:12px;line-height:1.6;margin:0}
 
-  .price-note{background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.6;margin-top:16px}
+  .field-row{margin-top:18px}
+  .field-row label{display:block;font-size:11px;font-weight:800;margin-bottom:7px}
+  .field-row input,.field-row select{width:100%;padding:13px;border:1px solid rgba(11,47,36,.18);border-radius:12px;background:#fafbf7;color:var(--forest);font:inherit;outline:none}
 
-  .booking-cta{text-align:center;background:var(--forest);color:#fff;border-radius:24px;padding:50px 6vw;margin-top:60px}
-  .booking-cta h2{font-family:var(--display);font-size:clamp(2rem,5vw,3rem);margin:0 0 10px}
-  .booking-cta p{color:rgba(255,255,255,.78);max-width:520px;margin:0 auto 24px;line-height:1.7}
+  .addon-toggle{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer}
+  .addon-toggle input{margin-top:3px}
+  .addon-toggle .addon-name{font-size:13px;font-weight:700}
+  .addon-toggle .addon-price{font-size:12px;color:var(--muted)}
 
-  @media(max-width:800px){
-    .price-wrap{padding:50px 6vw 70px}
-    .price-grid{grid-template-columns:repeat(2,1fr)}
-    .plan-grid{grid-template-columns:1fr}
-  }
-  @media(max-width:480px){
-    .price-grid{grid-template-columns:1fr 1fr}
-  }
+  /* Receipt */
+  .receipt{background:var(--forest);color:#fff;border-radius:22px;padding:28px;margin-bottom:26px}
+  .receipt h2{font-family:var(--display);font-size:22px;margin:0 0 4px}
+  .receipt-sub{color:rgba(255,255,255,.6);font-size:11px;margin:0 0 18px;letter-spacing:.04em;text-transform:uppercase}
+  .receipt-row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:13px}
+  .receipt-row:last-of-type{border-bottom:0}
+  .receipt-row span:first-child{color:rgba(255,255,255,.6)}
+  .receipt-includes{font-size:12px;color:rgba(255,255,255,.75);line-height:1.6;margin:10px 0}
+  .receipt-total{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.2)}
+  .receipt-total strong{font-family:var(--display);font-size:30px}
+  .receipt-empty{color:rgba(255,255,255,.7);font-size:13px;line-height:1.7}
+  .receipt-caveat{font-size:11px;color:rgba(255,255,255,.55);margin-top:10px;line-height:1.6}
+
+  .form-section-box{background:#fff;border:1px solid var(--border);border-radius:22px;padding:26px}
+  .form-section-box h2{font-family:var(--display);font-size:22px;margin:0 0 4px}
+  .form-section-box>p{color:var(--muted);font-size:13px;margin:0 0 6px}
+  .form-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.form-2col{grid-template-columns:1fr}}
+
+  .book-btn{width:100%;margin-top:22px}
+  .book-status{margin-top:16px;padding:14px;border-radius:12px;font-size:13px;line-height:1.6;display:none}
+  .book-status.show{display:block}
+  .book-status.pending{background:#fdf3d9;color:#8a5a00}
+  .book-status.error{background:#fde9e7;color:#7d211a}
+
+  /* Sticky mobile summary bar */
+  .sticky-bar{position:fixed;left:0;right:0;bottom:0;z-index:150;background:var(--forest);color:#fff;padding:12px 6vw;display:none;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 -8px 30px rgba(0,0,0,.2)}
+  .sticky-bar.show{display:flex}
+  .sticky-bar .sticky-total{font-family:var(--display);font-size:18px}
+  .sticky-bar .sticky-label{font-size:10px;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.04em}
+  .sticky-bar button{background:var(--lime);color:var(--forest);border:0;border-radius:999px;padding:11px 18px;font-weight:900;font-size:11px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+  @media(max-width:800px){ body{padding-bottom:70px} }
 </style>
 </head>
 <body>
@@ -79,7 +102,7 @@
     <img src="images/greencity-logo.png" alt="GreenCity logo" class="brand-logo">
     <span class="brand-name">GREENCITY</span>
   </a>
-  <a href="booking.html" class="header-book">Book</a>
+  <a href="booking.html" class="header-book">Simple Form</a>
 </header>
 
 <main class="price-wrap">
@@ -89,30 +112,74 @@
     <p class="eyebrow">PRIVATE GREENCITY PRICING</p>
     <h1>Price preview.</h1>
     <p style="color:var(--muted);line-height:1.7">
-      GreenCity pricing is available to customers who have received a private
-      access code on WhatsApp.
+      Enter the private access code provided by GreenCity to view our services and pricing.
     </p>
 
     <label for="accessCode">Enter Access Code</label>
     <input id="accessCode" type="password" autocomplete="off" placeholder="Enter your code">
-    <button id="unlockBtn" class="btn btn-primary" style="width:100%;margin-top:16px">View Private Pricing</button>
+    <button id="unlockBtn" class="btn btn-primary" style="width:100%;margin-top:16px">View Prices</button>
 
     <div id="priceMessage" class="notice" role="alert" aria-live="polite"></div>
   </section>
 
-  <!-- CATALOGUE (rendered by script) -->
+  <!-- CATALOGUE -->
   <section class="price-catalogue" id="priceCatalogue">
-    <div id="catalogueContent"></div>
 
-    <div class="booking-cta">
-      <p class="eyebrow" style="color:rgba(255,255,255,.65)">READY TO BOOK?</p>
-      <h2>Choose your service and send GreenCity your booking request.</h2>
-      <p>Your booking will open directly in WhatsApp so our team can confirm your appointment.</p>
-      <a href="booking.html" class="btn btn-primary">Book Now on WhatsApp</a>
+    <p class="eyebrow">GREENCITY PRIVATE PRICING</p>
+    <p class="intro-line">Choose a service, pick your vehicle or bin size, and watch your selection and total build below. Nothing is booked until you review everything and press Book.</p>
+
+    <div class="category-tabs" id="categoryTabs"></div>
+
+    <div id="categoryPanel"></div>
+
+    <div class="receipt" id="receiptBox"></div>
+
+    <div class="form-section-box" id="customerFormSection">
+      <p class="eyebrow" style="color:var(--muted)">STEP 2</p>
+      <h2>Your Details</h2>
+      <p>So GreenCity can confirm your appointment.</p>
+
+      <div class="form-2col">
+        <div class="field-row"><label for="custName">Full Name</label>
+          <input id="custName" autocomplete="name" placeholder="Your full name"></div>
+        <div class="field-row"><label for="custPhone">WhatsApp Number</label>
+          <input id="custPhone" type="tel" autocomplete="tel" placeholder="e.g. 066 123 4567"></div>
+      </div>
+
+      <div class="form-2col">
+        <div class="field-row"><label for="custArea">Area / Town</label>
+          <input id="custArea" placeholder="e.g. Mbombela"></div>
+        <div class="field-row"><label for="custAddress">Service Address</label>
+          <input id="custAddress" autocomplete="street-address" placeholder="Street / residential address"></div>
+      </div>
+
+      <div class="form-2col">
+        <div class="field-row"><label for="custDate">Preferred Date</label>
+          <input id="custDate" type="date"></div>
+        <div class="field-row"><label for="custTime">Preferred Time</label>
+          <select id="custTime">
+            <option value="">Select a time</option>
+            <option>08:00</option><option>09:00</option><option>10:00</option>
+            <option>11:00</option><option>12:00</option><option>13:00</option>
+            <option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
+          </select></div>
+      </div>
+
+      <div class="field-row"><label for="custNotes">Additional Notes</label>
+        <input id="custNotes" placeholder="Anything else GreenCity should know?"></div>
+
+      <button id="bookBtn" class="btn btn-primary book-btn">Book on WhatsApp</button>
+      <div id="bookStatus" class="book-status" role="alert" aria-live="polite"></div>
     </div>
+
   </section>
 
 </main>
+
+<div class="sticky-bar" id="stickyBar">
+  <div><div class="sticky-label">Your Total</div><div class="sticky-total" id="stickyTotal">R0</div></div>
+  <button id="stickyBookBtn" type="button">Review &amp; Book</button>
+</div>
 
 <footer class="footer simple-footer">
   <div class="footer-bottom">
@@ -128,209 +195,572 @@ document.addEventListener("DOMContentLoaded", function () {
   var config = (window.GREENCITY_CONFIG || {});
   var CURRENCY = config.currency || "R";
   var ACCESS_CODE = String(config.priceAccessCode || "").trim();
+  var WHATSAPP_NUMBER = String(config.whatsappNumber || "").replace(/\D/g, "");
   var pricing = config.pricing || {};
 
   var lockSection = document.getElementById("priceLock");
   var catalogueSection = document.getElementById("priceCatalogue");
   var codeInput = document.getElementById("accessCode");
   var unlockBtn = document.getElementById("unlockBtn");
-  var message = document.getElementById("priceMessage");
-  var content = document.getElementById("catalogueContent");
+  var lockMessage = document.getElementById("priceMessage");
+
+  var tabsBox = document.getElementById("categoryTabs");
+  var panelBox = document.getElementById("categoryPanel");
+  var receiptBox = document.getElementById("receiptBox");
+  var stickyBar = document.getElementById("stickyBar");
+  var stickyTotal = document.getElementById("stickyTotal");
+  var bookStatus = document.getElementById("bookStatus");
 
   var SESSION_KEY = "greencity_price_access";
 
-  function money(value) {
-    return CURRENCY + Number(value).toFixed(0);
-  }
-
-  function escapeHtml(value) {
-    return String(value == null ? "" : value).replace(/[&<>"']/g, function (ch) {
+  /* ---------- helpers ---------- */
+  function money(v) { return CURRENCY + Number(v || 0).toFixed(0); }
+  function escapeHtml(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (ch) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch];
     });
   }
 
-  /* ---------- Renderers ---------- */
+  /* ---------- state ---------- */
+  var CATEGORIES = [
+    { key: "essential", label: (pricing.carWash && pricing.carWash.services.essential) ? pricing.carWash.services.essential.name : "Essential Wash", type: "carwash" },
+    { key: "full", label: (pricing.carWash && pricing.carWash.services.full) ? pricing.carWash.services.full.name : "Full Inside & Outside", type: "carwash" },
+    { key: "premium", label: (pricing.carWash && pricing.carWash.services.premium) ? pricing.carWash.services.premium.name : "Premium Detail", type: "carwash" },
+    { key: "bin", label: (pricing.binCleaning && pricing.binCleaning.title) || "Wheelie Bin Cleaning", type: "bin" },
+    { key: "plan", label: (pricing.monthlyPlans && pricing.monthlyPlans.title) || "Monthly Plans", type: "plan" }
+  ];
 
-  function renderCarWash(section) {
-    if (!section) return "";
-    var vehicleTypes = section.vehicleTypes || {};
-    var html = '<div class="price-section">' +
-      '<h2 class="price-section-title">🚗 ' + escapeHtml(section.title || "Mobile Car Wash") + '</h2>' +
-      '<p class="price-section-sub">Prices vary by vehicle size and service level.</p>';
+  var state = {
+    category: null,       // 'essential' | 'full' | 'premium' | 'bin' | 'plan'
+    vehicleType: null,    // for carwash
+    carName: "",          // for carwash
+    binSize: null,        // for bin
+    binBilling: "single",
+    binDetails: "",
+    planIndex: null,      // for plan
+    addons: {},           // { addonName: true }
+    travelIndex: null     // index into pricing.travel.fees, or null = not selected
+  };
 
-    Object.keys(section.services || {}).forEach(function (key) {
-      var tier = section.services[key];
-      html += '<div class="tier"><div class="tier-head">' +
-        '<h3>' + escapeHtml(tier.name) + '</h3>' +
-        (tier.description ? '<p>' + escapeHtml(tier.description) + '</p>' : '') +
-        '</div>';
+  function currentCategoryDef() {
+    for (var i = 0; i < CATEGORIES.length; i++) {
+      if (CATEGORIES[i].key === state.category) return CATEGORIES[i];
+    }
+    return null;
+  }
+
+  function resetSelectionExceptCategory() {
+    state.vehicleType = null;
+    state.carName = "";
+    state.binSize = null;
+    state.binBilling = "single";
+    state.binDetails = "";
+    state.planIndex = null;
+    state.addons = {};
+    state.travelIndex = null;
+  }
+
+  /* ---------- build the current selection summary (single source of truth) ---------- */
+  function buildSummary() {
+    var catDef = currentCategoryDef();
+    if (!catDef) return null;
+
+    if (catDef.type === "carwash") {
+      var tier = pricing.carWash.services[state.category];
+      if (!state.vehicleType) return { incomplete: true, reason: "Select a vehicle type." };
+      var vehicleLabel = pricing.carWash.vehicleTypes[state.vehicleType] || state.vehicleType;
+      var basePrice = tier.prices[state.vehicleType];
+
+      var addonLines = [];
+      var addonTotal = 0;
+      var fromNotes = [];
+      (pricing.addOns && pricing.addOns.items || []).forEach(function (addon) {
+        if (state.addons[addon.name]) {
+          if (addon.priceType === "from") {
+            fromNotes.push(addon.name + " (from " + money(addon.price) + ", confirmed by GreenCity)");
+          } else {
+            addonTotal += addon.price;
+            addonLines.push(addon.name + " — " + money(addon.price));
+          }
+        }
+      });
+
+      var travelLabel = null;
+      var travelAmount = 0;
+      var travelIsQuote = false;
+      if (state.travelIndex !== null && pricing.travel && pricing.travel.fees[state.travelIndex]) {
+        var fee = pricing.travel.fees[state.travelIndex];
+        travelLabel = fee.distance + (fee.label ? " (" + fee.label + ")" : " (" + money(fee.price) + ")");
+        if (fee.price === null) {
+          travelIsQuote = true;
+        } else {
+          travelAmount = fee.price;
+        }
+      }
+
+      return {
+        incomplete: !state.carName,
+        reason: !state.carName ? "Enter your car's name/model." : null,
+        serviceLabel: pricing.carWash.title,
+        levelLabel: tier.name,
+        vehicleLabel: vehicleLabel,
+        carName: state.carName,
+        includes: tier.includes || [],
+        tierNote: tier.note || null,
+        addonLines: addonLines,
+        fromNotes: fromNotes,
+        travelLabel: travelLabel,
+        travelIsQuote: travelIsQuote,
+        total: basePrice + addonTotal + travelAmount,
+        basePrice: basePrice
+      };
+    }
+
+    if (catDef.type === "bin") {
+      if (!state.binSize) return { incomplete: true, reason: "Select a bin size." };
+      var bin = pricing.binCleaning.bins.filter(function (b) { return b.size === state.binSize; })[0];
+      var billingPrice = state.binBilling === "monthly" ? bin.monthly : bin.single;
+      return {
+        incomplete: false,
+        serviceLabel: pricing.binCleaning.title,
+        levelLabel: bin.name + " — " + (state.binBilling === "monthly" ? "Monthly Plan" : "Single Clean"),
+        vehicleLabel: null,
+        carName: state.binDetails,
+        includes: [],
+        addonLines: [],
+        fromNotes: [],
+        travelLabel: null,
+        travelIsQuote: false,
+        total: billingPrice,
+        basePrice: billingPrice
+      };
+    }
+
+    if (catDef.type === "plan") {
+      if (state.planIndex === null) return { incomplete: true, reason: "Select a monthly plan." };
+      var plan = pricing.monthlyPlans.plans[state.planIndex];
+      return {
+        incomplete: false,
+        serviceLabel: pricing.monthlyPlans.title,
+        levelLabel: plan.name,
+        vehicleLabel: null,
+        carName: null,
+        includes: [plan.description],
+        addonLines: [],
+        fromNotes: [],
+        travelLabel: null,
+        travelIsQuote: false,
+        total: plan.price,
+        basePrice: plan.price
+      };
+    }
+
+    return null;
+  }
+
+  /* ---------- render: category tabs ---------- */
+  function renderTabs() {
+    tabsBox.innerHTML = CATEGORIES.map(function (cat) {
+      return '<div class="category-tab' + (state.category === cat.key ? " active" : "") +
+        '" data-select-category="' + cat.key + '">' + escapeHtml(cat.label) + '</div>';
+    }).join("");
+  }
+
+  /* ---------- render: category panel ---------- */
+  function renderPanel() {
+    var catDef = currentCategoryDef();
+    if (!catDef) { panelBox.innerHTML = ""; return; }
+
+    if (catDef.type === "carwash") {
+      var tier = pricing.carWash.services[state.category];
+      var vehicleTypes = pricing.carWash.vehicleTypes;
+
+      var html = '<div class="panel"><h2>' + escapeHtml(tier.name) + '</h2>' +
+        '<p class="panel-desc">' + escapeHtml(tier.description) + '</p>';
 
       if (tier.includes && tier.includes.length) {
-        html += '<div class="tier-includes">' +
-          tier.includes.map(function (item) { return '<span>' + escapeHtml(item) + '</span>'; }).join("") +
+        html += '<div class="includes-row">' +
+          tier.includes.map(function (i) { return '<span>' + escapeHtml(i) + '</span>'; }).join("") +
           '</div>';
       }
 
-      html += '<div class="price-grid">';
-      Object.keys(tier.prices || {}).forEach(function (vType) {
-        var label = vehicleTypes[vType] || vType;
-        html += '<div class="price-cell"><span>' + escapeHtml(label) + '</span><strong>' +
-          money(tier.prices[vType]) + '</strong></div>';
+      html += '<div class="option-grid">';
+      Object.keys(tier.prices).forEach(function (vType) {
+        var sel = state.vehicleType === vType;
+        html += '<div class="option-card' + (sel ? " selected" : "") + '" data-select-vehicle="' + vType + '">' +
+          '<span>' + escapeHtml(vehicleTypes[vType] || vType) + '</span>' +
+          '<strong>' + money(tier.prices[vType]) + '</strong></div>';
       });
       html += '</div>';
 
       if (tier.note) {
-        html += '<p class="tier-note">' + escapeHtml(tier.note) + '</p>';
+        html += '<p class="panel-note">' + escapeHtml(tier.note) + '</p>';
       }
 
+      html += '<div class="field-row"><label for="carNameInput">What\u2019s the actual car? (e.g. Toyota Corolla)</label>' +
+        '<input id="carNameInput" placeholder="Enter your vehicle name" value="' + escapeHtml(state.carName) + '"></div>';
+
       html += '</div>';
-    });
 
-    html += '</div>';
-    return html;
-  }
+      // Add-ons panel
+      if (pricing.addOns && pricing.addOns.items && pricing.addOns.items.length) {
+        html += '<div class="panel"><h2>' + escapeHtml(pricing.addOns.title || "Optional Add-Ons") + '</h2>';
+        pricing.addOns.items.forEach(function (addon) {
+          var priceStr = addon.priceType === "from" ? "From " + money(addon.price) : money(addon.price);
+          var checked = state.addons[addon.name] ? " checked" : "";
+          html += '<label class="addon-toggle"><input type="checkbox" data-toggle-addon="' + escapeHtml(addon.name) + '"' + checked + '>' +
+            '<span><span class="addon-name">' + escapeHtml(addon.name) + '</span><br>' +
+            '<span class="addon-price">' + escapeHtml(priceStr) + '</span></span></label>';
+        });
+        if (pricing.addOns.note) {
+          html += '<p class="panel-note">' + escapeHtml(pricing.addOns.note) + '</p>';
+        }
+        html += '</div>';
+      }
 
-  function renderBinCleaning(section) {
-    if (!section || !section.bins) return "";
-    var html = '<div class="price-section">' +
-      '<h2 class="price-section-title">🗑️ ' + escapeHtml(section.title || "Wheelie Bin Cleaning") + '</h2>' +
-      '<p class="price-section-sub">Single clean or a discounted monthly plan.</p>' +
-      '<div class="bin-grid">';
+      // Travel panel
+      if (pricing.travel && pricing.travel.fees && pricing.travel.fees.length) {
+        html += '<div class="panel"><h2>' + escapeHtml(pricing.travel.title || "Travel / Call-Out") + '</h2>' +
+          '<div class="field-row"><label for="travelSelect">If you know your distance from GreenCity, select it (optional)</label>' +
+          '<select id="travelSelect"><option value="">Not sure — GreenCity will confirm</option>';
+        pricing.travel.fees.forEach(function (fee, idx) {
+          var label = fee.distance + " — " + (fee.label || money(fee.price));
+          html += '<option value="' + idx + '"' + (state.travelIndex === idx ? " selected" : "") + '>' + escapeHtml(label) + '</option>';
+        });
+        html += '</select></div>';
+        if (pricing.travel.note) {
+          html += '<p class="panel-note">' + escapeHtml(pricing.travel.note) + '</p>';
+        }
+        html += '</div>';
+      }
 
-    section.bins.forEach(function (bin) {
-      html += '<div class="bin-card"><h4>' + escapeHtml(bin.name) + '</h4>' +
-        '<div class="row"><span>Single Clean</span><strong>' + money(bin.single) + '</strong></div>' +
-        '<div class="row"><span>Monthly Plan</span><strong>' + money(bin.monthly) + '</strong></div>' +
-        '</div>';
-    });
-
-    html += '</div>';
-    if (section.note) {
-      html += '<p class="price-note">' + escapeHtml(section.note) + '</p>';
+      panelBox.innerHTML = html;
+      return;
     }
-    html += '</div>';
-    return html;
-  }
 
-  function renderTravel(section) {
-    if (!section || !section.fees) return "";
-    var html = '<div class="price-section">' +
-      '<h2 class="price-section-title">📍 ' + escapeHtml(section.title || "Travel / Call-Out") + '</h2>' +
-      '<div class="travel-grid">';
+    if (catDef.type === "bin") {
+      var section = pricing.binCleaning;
+      var html2 = '<div class="panel"><h2>' + escapeHtml(section.title) + '</h2>' +
+        '<p class="panel-desc">Select your bin size, then choose a single clean or a monthly plan.</p>' +
+        '<div class="option-grid">';
 
-    section.fees.forEach(function (fee) {
-      var value = fee.label ? fee.label : money(fee.price);
-      html += '<div class="travel-cell"><span>' + escapeHtml(fee.distance) + '</span><strong>' +
-        escapeHtml(value) + '</strong></div>';
-    });
+      section.bins.forEach(function (bin) {
+        var sel = state.binSize === bin.size;
+        html2 += '<div class="option-card' + (sel ? " selected" : "") + '" data-select-bin="' + bin.size + '">' +
+          '<span>' + escapeHtml(bin.name) + '</span>' +
+          '<strong>' + money(bin.single) + '</strong></div>';
+      });
+      html2 += '</div>';
 
-    html += '</div>';
-    if (section.note) {
-      html += '<p class="price-note">' + escapeHtml(section.note) + '</p>';
+      if (state.binSize) {
+        html2 += '<div class="bin-billing">' +
+          '<button type="button" data-select-billing="single" class="' + (state.binBilling === "single" ? "selected" : "") + '">Single Clean</button>' +
+          '<button type="button" data-select-billing="monthly" class="' + (state.binBilling === "monthly" ? "selected" : "") + '">Monthly Plan</button>' +
+          '</div>';
+      }
+
+      html2 += '<div class="field-row"><label for="binDetailsInput">Any details about the bin (optional)</label>' +
+        '<input id="binDetailsInput" placeholder="e.g. green bin, side gate" value="' + escapeHtml(state.binDetails) + '"></div>';
+
+      if (section.note) {
+        html2 += '<p class="panel-note">' + escapeHtml(section.note) + '</p>';
+      }
+
+      html2 += '</div>';
+      panelBox.innerHTML = html2;
+      return;
     }
-    html += '</div>';
-    return html;
-  }
 
-  function renderAddOns(section) {
-    if (!section || !section.items) return "";
-    var html = '<div class="price-section">' +
-      '<h2 class="price-section-title">✨ ' + escapeHtml(section.title || "Optional Add-Ons") + '</h2>' +
-      '<div class="addon-list">';
+    if (catDef.type === "plan") {
+      var mp = pricing.monthlyPlans;
+      var html3 = '<div class="panel"><h2>' + escapeHtml(mp.title) + '</h2>' +
+        '<p class="panel-desc">Select the plan that suits you.</p>' +
+        '<div class="plan-grid">';
 
-    section.items.forEach(function (item) {
-      var value = item.priceType === "from" ? "From " + money(item.price) : money(item.price);
-      html += '<div class="addon-row"><span>' + escapeHtml(item.name) + '</span><strong>' +
-        escapeHtml(value) + '</strong></div>';
-    });
-
-    html += '</div>';
-    if (section.note) {
-      html += '<p class="price-note">' + escapeHtml(section.note) + '</p>';
+      mp.plans.forEach(function (plan, idx) {
+        var sel = state.planIndex === idx;
+        html3 += '<div class="plan-pick' + (sel ? " selected" : "") + '" data-select-plan="' + idx + '">' +
+          '<h4>' + escapeHtml(plan.name) + '</h4>' +
+          '<p class="plan-price">' + money(plan.price) + ' <span style="font-size:11px;color:var(--muted);font-family:var(--body)">/ month</span></p>' +
+          '<p>' + escapeHtml(plan.description) + '</p></div>';
+      });
+      html3 += '</div>';
+      if (mp.note) {
+        html3 += '<p class="panel-note">' + escapeHtml(mp.note) + '</p>';
+      }
+      html3 += '</div>';
+      panelBox.innerHTML = html3;
+      return;
     }
-    html += '</div>';
-    return html;
   }
 
-  function renderMonthlyPlans(section) {
-    if (!section || !section.plans) return "";
-    var html = '<div class="price-section">' +
-      '<h2 class="price-section-title">📅 ' + escapeHtml(section.title || "Monthly Plans") + '</h2>' +
-      '<div class="plan-grid">';
+  /* ---------- render: live receipt ---------- */
+  function renderReceipt() {
+    var summary = buildSummary();
 
-    section.plans.forEach(function (plan) {
-      html += '<div class="plan-card"><h4>' + escapeHtml(plan.name) + '</h4>' +
-        '<p class="plan-price">' + money(plan.price) + ' <span style="font-size:12px;color:var(--muted);font-family:var(--body)">/ month</span></p>' +
-        '<p>' + escapeHtml(plan.description) + '</p></div>';
-    });
-
-    html += '</div>';
-    if (section.note) {
-      html += '<p class="price-note">' + escapeHtml(section.note) + '</p>';
+    if (!summary) {
+      receiptBox.innerHTML = '<h2>Your GreenCity Selection</h2>' +
+        '<p class="receipt-empty">Choose a service above to build your order.</p>';
+      stickyBar.classList.remove("show");
+      return;
     }
-    html += '</div>';
-    return html;
+
+    var html = '<h2>Your GreenCity Selection</h2><p class="receipt-sub">Live receipt — updates as you choose</p>';
+
+    if (summary.incomplete) {
+      html += '<p class="receipt-empty">' + escapeHtml(summary.reason) + '</p>';
+      receiptBox.innerHTML = html;
+      stickyBar.classList.remove("show");
+      return;
+    }
+
+    html += '<div class="receipt-row"><span>Service</span><span>' + escapeHtml(summary.serviceLabel) + '</span></div>';
+    html += '<div class="receipt-row"><span>Level</span><span>' + escapeHtml(summary.levelLabel) + '</span></div>';
+    if (summary.vehicleLabel) {
+      html += '<div class="receipt-row"><span>Vehicle Category</span><span>' + escapeHtml(summary.vehicleLabel) + '</span></div>';
+    }
+    if (summary.carName) {
+      html += '<div class="receipt-row"><span>' + (summary.vehicleLabel ? "Car" : "Details") + '</span><span>' + escapeHtml(summary.carName) + '</span></div>';
+    }
+
+    if (summary.includes && summary.includes.length) {
+      html += '<div class="receipt-includes"><strong>Includes:</strong><br>' + summary.includes.map(escapeHtml).join(", ") + '</div>';
+    }
+
+    if (summary.addonLines.length) {
+      summary.addonLines.forEach(function (line) {
+        html += '<div class="receipt-row"><span>Add-on</span><span>' + escapeHtml(line) + '</span></div>';
+      });
+    }
+
+    if (summary.fromNotes.length) {
+      html += '<div class="receipt-caveat"><strong>Additional (confirmed by GreenCity):</strong><br>' + summary.fromNotes.map(escapeHtml).join("<br>") + '</div>';
+    }
+
+    if (summary.travelLabel) {
+      html += '<div class="receipt-row"><span>Travel</span><span>' + escapeHtml(summary.travelLabel) + (summary.travelIsQuote ? " — to be quoted" : "") + '</span></div>';
+    }
+
+    html += '<div class="receipt-total"><span>' + (summary.travelIsQuote || summary.fromNotes.length ? "Estimated Total" : "Total") + '</span><strong>' + money(summary.total) + '</strong></div>';
+
+    if (summary.travelIsQuote || summary.fromNotes.length) {
+      html += '<p class="receipt-caveat">Some items above will be confirmed by GreenCity before your appointment is finalised.</p>';
+    }
+
+    receiptBox.innerHTML = html;
+
+    stickyBar.classList.add("show");
+    stickyTotal.textContent = money(summary.total);
   }
 
-  function renderCatalogue() {
-    content.innerHTML =
-      renderCarWash(pricing.carWash) +
-      renderBinCleaning(pricing.binCleaning) +
-      renderTravel(pricing.travel) +
-      renderAddOns(pricing.addOns) +
-      renderMonthlyPlans(pricing.monthlyPlans);
+  /* ---------- render all ---------- */
+  function renderAll() {
+    renderTabs();
+    renderPanel();
+    renderReceipt();
+    bindPanelInputs();
   }
 
+  /* ---------- bind inputs that live inside re-rendered panel ---------- */
+  function bindPanelInputs() {
+    var carNameInput = document.getElementById("carNameInput");
+    if (carNameInput) {
+      carNameInput.addEventListener("input", function () {
+        state.carName = carNameInput.value;
+        renderReceipt();
+      });
+    }
+
+    var binDetailsInput = document.getElementById("binDetailsInput");
+    if (binDetailsInput) {
+      binDetailsInput.addEventListener("input", function () {
+        state.binDetails = binDetailsInput.value;
+        renderReceipt();
+      });
+    }
+
+    var travelSelect = document.getElementById("travelSelect");
+    if (travelSelect) {
+      travelSelect.addEventListener("change", function () {
+        state.travelIndex = travelSelect.value === "" ? null : Number(travelSelect.value);
+        renderReceipt();
+      });
+    }
+  }
+
+  /* ---------- delegated click handling ---------- */
+  catalogueSection.addEventListener("click", function (event) {
+    var el = event.target.closest("[data-select-category],[data-select-vehicle],[data-select-bin],[data-select-billing],[data-select-plan]");
+    if (!el) return;
+
+    if (el.hasAttribute("data-select-category")) {
+      state.category = el.getAttribute("data-select-category");
+      resetSelectionExceptCategory();
+      renderAll();
+      return;
+    }
+    if (el.hasAttribute("data-select-vehicle")) {
+      state.vehicleType = el.getAttribute("data-select-vehicle");
+      renderAll();
+      return;
+    }
+    if (el.hasAttribute("data-select-bin")) {
+      state.binSize = el.getAttribute("data-select-bin");
+      renderAll();
+      return;
+    }
+    if (el.hasAttribute("data-select-billing")) {
+      state.binBilling = el.getAttribute("data-select-billing");
+      renderAll();
+      return;
+    }
+    if (el.hasAttribute("data-select-plan")) {
+      state.planIndex = Number(el.getAttribute("data-select-plan"));
+      renderAll();
+      return;
+    }
+  });
+
+  catalogueSection.addEventListener("change", function (event) {
+    if (event.target.matches("[data-toggle-addon]")) {
+      var name = event.target.getAttribute("data-toggle-addon");
+      state.addons[name] = event.target.checked;
+      renderReceipt();
+    }
+  });
+
+  /* ---------- booking reference ---------- */
+  function makeBookingNumber() {
+    var random = Math.floor(100000 + Math.random() * 900000);
+    return "GC-" + random;
+  }
+
+  /* ---------- book flow ---------- */
+  function scrollToBooking() {
+    document.getElementById("customerFormSection").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  document.getElementById("stickyBookBtn").addEventListener("click", scrollToBooking);
+
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
+
+  document.getElementById("bookBtn").addEventListener("click", function () {
+    var summary = buildSummary();
+
+    if (!summary || summary.incomplete) {
+      bookStatus.textContent = "Please finish choosing your service before booking.";
+      bookStatus.className = "book-status show error";
+      return;
+    }
+
+    var name = val("custName");
+    var phone = val("custPhone");
+    var area = val("custArea");
+    var address = val("custAddress");
+    var date = val("custDate");
+    var time = val("custTime");
+    var notes = val("custNotes");
+
+    if (!name || !phone || !area || !address || !date || !time) {
+      bookStatus.textContent = "Please fill in your name, WhatsApp number, area, address, date and time.";
+      bookStatus.className = "book-status show error";
+      return;
+    }
+
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var chosenDate = new Date(date + "T00:00:00");
+    if (chosenDate < today) {
+      bookStatus.textContent = "Please choose a date that is today or later.";
+      bookStatus.className = "book-status show error";
+      return;
+    }
+
+    var ref = makeBookingNumber();
+
+    var includesText = summary.includes && summary.includes.length ? summary.includes.map(function (i) { return "- " + i; }).join("\n") : "None";
+    var addonsText = summary.addonLines.length || summary.fromNotes.length
+      ? summary.addonLines.concat(summary.fromNotes).join("\n")
+      : "None";
+    var travelText = summary.travelLabel ? summary.travelLabel + (summary.travelIsQuote ? " (to be quoted)" : "") : "Core service area";
+
+    var message =
+"\uD83C\uDF3F GREENCITY BOOKING REQUEST\n\n" +
+"Booking Reference:\n" + ref + "\n\n" +
+"Customer:\n" + name + "\n\n" +
+"WhatsApp:\n" + phone + "\n\n" +
+"SERVICE:\n" + summary.serviceLabel + "\n\n" +
+"SERVICE LEVEL:\n" + summary.levelLabel + "\n\n" +
+(summary.vehicleLabel ? "VEHICLE:\n" + summary.vehicleLabel + "\n\n" : "") +
+(summary.carName ? (summary.vehicleLabel ? "CAR:\n" : "DETAILS:\n") + summary.carName + "\n\n" : "") +
+"INCLUDED:\n" + includesText + "\n\n" +
+"ADD-ONS:\n" + addonsText + "\n\n" +
+"TRAVEL:\n" + travelText + "\n\n" +
+"DATE:\n" + date + "\n\n" +
+"TIME:\n" + time + "\n\n" +
+"AREA:\n" + area + "\n\n" +
+"ADDRESS:\n" + address + "\n\n" +
+"NOTES:\n" + (notes || "None") + "\n\n" +
+"--------------------------------\n" +
+"TOTAL:\n" + money(summary.total) + (summary.travelIsQuote || summary.fromNotes.length ? " (estimated — final amount confirmed by GreenCity)" : "") + "\n" +
+"--------------------------------\n\n" +
+"STATUS:\nPENDING CONFIRMATION";
+
+    bookStatus.textContent = "Reference " + ref + " — opening WhatsApp so you can send your request to GreenCity...";
+    bookStatus.className = "book-status show pending";
+
+    var number = WHATSAPP_NUMBER || "27664926146";
+    var url = "https://wa.me/" + number + "?text=" + encodeURIComponent(message);
+
+    window.setTimeout(function () {
+      window.location.href = url;
+    }, 400);
+  });
+
+  /* ---------- access gate ---------- */
   function unlock() {
-    renderCatalogue();
     lockSection.hidden = true;
     catalogueSection.classList.add("show");
+    renderAll();
   }
 
-  /* Skip re-entering the code again this browser session */
   var alreadyGranted = false;
-  try {
-    alreadyGranted = sessionStorage.getItem(SESSION_KEY) === "granted";
-  } catch (error) {
-    alreadyGranted = false;
-  }
-
-  if (alreadyGranted) {
-    unlock();
-  }
+  try { alreadyGranted = sessionStorage.getItem(SESSION_KEY) === "granted"; } catch (e) { alreadyGranted = false; }
+  if (alreadyGranted) { unlock(); }
 
   unlockBtn.addEventListener("click", function () {
     var value = codeInput.value.trim();
-
     if (!value) {
-      message.textContent = "Please enter your access code.";
-      message.className = "notice error";
+      lockMessage.textContent = "Please enter your access code.";
+      lockMessage.className = "notice error";
       return;
     }
-
     if (!ACCESS_CODE || value.toLowerCase() !== ACCESS_CODE.toLowerCase()) {
-      message.textContent = "Invalid access code. Please check the code sent to you by GreenCity.";
-      message.className = "notice error";
+      lockMessage.textContent = "Invalid access code. Please check the code sent to you by GreenCity.";
+      lockMessage.className = "notice error";
       return;
     }
-
-    try {
-      sessionStorage.setItem(SESSION_KEY, "granted");
-    } catch (error) {
-      // sessionStorage unavailable — access still works for this page view
-    }
-
-    message.textContent = "";
-    message.className = "notice";
+    try { sessionStorage.setItem(SESSION_KEY, "granted"); } catch (e) {}
+    lockMessage.textContent = "";
+    lockMessage.className = "notice";
     unlock();
   });
 
   codeInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      unlockBtn.click();
-    }
+    if (event.key === "Enter") { event.preventDefault(); unlockBtn.click(); }
   });
+
+  /* date min = today, for the customer form date field */
+  var dateField = document.getElementById("custDate");
+  if (dateField) {
+    var t = new Date();
+    var y = t.getFullYear();
+    var m = String(t.getMonth() + 1).padStart(2, "0");
+    var d = String(t.getDate()).padStart(2, "0");
+    dateField.min = y + "-" + m + "-" + d;
+  }
 });
 </script>
 </body>
