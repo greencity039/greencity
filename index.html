@@ -18,12 +18,14 @@
   <button class="menu-toggle" data-menu-toggle aria-label="Open menu">☰</button>
   <nav class="header-nav" data-mobile-menu>
     <a href="#services">Services</a>
-    <a href="#story">Our Story</a>
-    <a href="price.html">Prices</a>
+    <a href="#how">How It Works</a>
+    <a href="#faq">FAQ</a>
+    <a href="price.html">View Prices</a>
     <a href="booking.html" class="header-book">Book Now</a>
   </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero">
   <video class="hero-video" autoplay muted loop playsinline poster="images/greencity-hero.jpg">
     <source src="videos/bin-washing.mp4" type="video/mp4">
@@ -34,29 +36,55 @@
     <h1>Cleaner <span>spaces.</span><br>Better living.</h1>
     <p class="hero-description">
       Professional bin cleaning and mobile car wash services brought directly to you.
-      Simple booking. Reliable service. A cleaner everyday environment.
+      We come to your home or office — you only pay once the job is done.
     </p>
     <div class="hero-actions">
       <a href="booking.html" class="btn btn-primary">Book Now</a>
-      <a href="#services" class="btn btn-secondary">Explore Services</a>
+      <a href="price.html" class="btn btn-secondary">View Prices</a>
     </div>
   </div>
 </section>
 
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <span>We come to you</span>
+  <span>You pay after the job is done</span>
+  <span>Professional mobile cleaning</span>
+  <span>Choose exactly the service you need</span>
+</div>
+
+<!-- WHY GREENCITY -->
 <section class="intro" id="story">
   <div class="intro-grid">
-    <div><p class="intro-label">THE GREENCITY STANDARD</p></div>
+    <div><p class="intro-label">WHY GREENCITY</p></div>
     <div>
       <h2>We bring the clean to your doorstep.</h2>
       <p class="intro-copy">
         GreenCity was created around one simple idea: everyday cleaning should be
         professional, convenient and accessible. Instead of making the trip yourself,
-        we come to you and do the work properly.
+        we come to you and do the work properly — and your vehicle stays right at
+        your home or workplace the whole time.
       </p>
     </div>
   </div>
 </section>
 
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <p class="eyebrow">HOW GREENCITY WORKS</p>
+  <h2>Simple, from start to finish.</h2>
+  <div class="how-grid">
+    <div class="how-step"><span class="num">01</span><p>Choose your service</p></div>
+    <div class="how-step"><span class="num">02</span><p>Build your package</p></div>
+    <div class="how-step"><span class="num">03</span><p>Review your receipt</p></div>
+    <div class="how-step"><span class="num">04</span><p>Book through WhatsApp</p></div>
+    <div class="how-step"><span class="num">05</span><p>GreenCity confirms</p></div>
+    <div class="how-step"><span class="num">06</span><p>We come to you</p></div>
+    <div class="how-step"><span class="num">07</span><p>You pay when the job is complete</p></div>
+  </div>
+</section>
+
+<!-- MOBILE CAR WASH VISUAL -->
 <section class="service-showcase" id="services">
   <video class="service-video" autoplay muted loop playsinline poster="images/bin-washing.jpg">
     <source src="videos/bin-washing.mp4" type="video/mp4">
@@ -74,30 +102,130 @@
   <div class="service-content dark-content">
     <span class="service-tag">02 — MOBILE CAR WASH</span>
     <h2>We bring the wash<br>to you.</h2>
-    <p>Choose your vehicle service and preferred appointment time. We travel to your location.</p>
-    <a href="booking.html" class="btn btn-primary">Book Car Wash</a>
+    <p>Choose your vehicle service and preferred appointment time. We travel to your location and work around you.</p>
+    <div class="process-strip">
+      <span>🚐 We arrive at your location</span>
+      <span>🧽 Prep &amp; pressure wash</span>
+      <span>🛞 Wheels &amp; tyres detailed</span>
+      <span>✨ Dry &amp; final finish</span>
+    </div>
+    <a href="booking.html" class="btn btn-primary" style="margin-top:26px">Book Car Wash</a>
   </div>
 </section>
 
+<!-- SERVICE PACKAGES TEASER -->
+<section class="package-section">
+  <p class="eyebrow">SERVICE PACKAGES</p>
+  <h2 style="font-family:var(--display);font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:-.06em;margin:0 0 10px">Choose your level of clean.</h2>
+  <p class="intro-copy" style="margin-bottom:0">Three car wash packages, plus wheelie bin cleaning and monthly plans — full pricing unlocks with your private access code.</p>
+  <div class="package-grid" id="packageGrid"></div>
+</section>
+
+<!-- PRIVATE PRICING CTA -->
+<section style="padding:0 7vw">
+  <div class="pricing-cta">
+    <p class="eyebrow" style="color:rgba(255,255,255,.6)">PRIVATE GREENCITY PRICING</p>
+    <h2>Build your service, see your total.</h2>
+    <p>Enter your private access code to unlock interactive pricing — pick your package, your vehicle, your add-ons, and watch your total calculate live.</p>
+    <a href="price.html" class="btn btn-primary">View Prices</a>
+  </div>
+</section>
+
+<!-- RECENT CARS SLIDESHOW -->
+<section class="gallery-section">
+  <p class="eyebrow">RECENT WORK</p>
+  <h2 style="font-family:var(--display);font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:-.06em;margin:0 0 30px">A few cars we finished recently.</h2>
+
+  <div class="carousel" id="carousel">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-slide"><img src="images/gallery-1.jpg" alt="Toyota Corolla after a GreenCity wash" data-fallback-label="Toyota Corolla — Essential Wash"><div class="slide-placeholder" hidden><strong>Toyota Corolla</strong><span>Essential Wash — photo coming soon</span></div><div class="carousel-label">Toyota Corolla</div></div>
+      <div class="carousel-slide"><img src="images/gallery-2.jpg" alt="BMW X5 after a GreenCity wash" data-fallback-label="BMW X5 — Premium Detail"><div class="slide-placeholder" hidden><strong>BMW X5</strong><span>Premium Detail — photo coming soon</span></div><div class="carousel-label">BMW X5</div></div>
+      <div class="carousel-slide"><img src="images/gallery-3.jpg" alt="Ford Ranger after a GreenCity wash" data-fallback-label="Ford Ranger — Full Inside &amp; Outside"><div class="slide-placeholder" hidden><strong>Ford Ranger</strong><span>Full Inside &amp; Outside — photo coming soon</span></div><div class="carousel-label">Ford Ranger</div></div>
+      <div class="carousel-slide"><img src="images/gallery-4.jpg" alt="Volkswagen Polo after a GreenCity wash" data-fallback-label="Volkswagen Polo — Essential Wash"><div class="slide-placeholder" hidden><strong>Volkswagen Polo</strong><span>Essential Wash — photo coming soon</span></div><div class="carousel-label">Volkswagen Polo</div></div>
+    </div>
+    <button class="carousel-nav prev" id="carouselPrev" aria-label="Previous">‹</button>
+    <button class="carousel-nav next" id="carouselNext" aria-label="Next">›</button>
+  </div>
+  <div class="carousel-dots" id="carouselDots"></div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section class="ba-section">
+  <p class="eyebrow">THE TRANSFORMATION</p>
+  <h2 style="font-family:var(--display);font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:-.06em;margin:0 0 30px">From mud &amp; road grime to deep showroom gloss.</h2>
+
+  <div class="ba-wrap" id="baWrap">
+    <img class="ba-after" src="images/after.jpg" alt="Vehicle after GreenCity detailing">
+    <div class="ba-before-layer" id="baBeforeLayer">
+      <img class="ba-before" src="images/before.jpg" alt="Vehicle before GreenCity detailing">
+    </div>
+    <span class="ba-tag before-tag">Before</span>
+    <span class="ba-tag after-tag">After Detail</span>
+    <div class="ba-handle" id="baHandle"><div class="ba-handle-btn">⇔</div></div>
+  </div>
+  <p class="ba-caption"><strong>Slide the handle to see the transformation.</strong>Every GreenCity wash is finished by hand and checked before we call the job done.</p>
+</section>
+
+<!-- VEHICLE BRAND TRUST -->
+<section class="brand-section">
+  <p class="eyebrow">TRUSTED WITH EVERY VEHICLE</p>
+  <h2 style="font-family:var(--display);font-size:clamp(2.2rem,4.5vw,3.4rem);letter-spacing:-.05em;margin:0">Owners trust us with cars like these every week.</h2>
+  <div class="brand-grid" id="brandGrid"></div>
+  <p class="brand-disclaimer">GreenCity works with vehicles from a wide range of respected automotive brands. Brand marks shown are placeholders — GreenCity is not affiliated with, endorsed by, or sponsored by these manufacturers.</p>
+</section>
+
+<!-- SERVICE AREA -->
 <section class="area-section">
   <p class="eyebrow">SERVICE AREA</p>
-  <h2>Serving Mpumalanga.</h2>
-  <p>
-    Local appointments are mainly handled Monday to Friday. Customers outside our
-    main Mpumalanga service area may be scheduled on Saturday or Sunday, depending
-    on distance and availability.
-  </p>
-  <div class="area-grid">
-    <div class="card"><strong>Mbombela</strong><span>Capital-city side of the service area</span></div>
-    <div class="card"><strong>Thulamahashe</strong><span>Mpumalanga service area</span></div>
-    <div class="card"><strong>Acornhoek</strong><span>Mpumalanga service area</span></div>
+  <h2 id="serviceAreaHeading">Which areas do you cover?</h2>
+  <p id="serviceAreaBody"></p>
+  <div class="area-grid" id="areaGrid"></div>
+  <p style="color:var(--muted);font-size:13px;line-height:1.7;margin-top:20px" id="serviceAreaNote"></p>
+</section>
+
+<!-- OPERATING HOURS -->
+<section class="hours-section">
+  <p class="eyebrow">OPERATING HOURS</p>
+  <h2 style="font-family:var(--display);font-size:clamp(2.2rem,4.5vw,3.4rem);letter-spacing:-.05em;margin:0">When we're working.</h2>
+  <div class="hours-list" id="hoursList"></div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <p class="eyebrow">GOOD TO KNOW</p>
+  <h2 style="font-family:var(--display);font-size:clamp(2.2rem,4.5vw,3.4rem);letter-spacing:-.05em;margin:0 0 10px">Frequently asked questions.</h2>
+
+  <div class="faq-item">
+    <button class="faq-question">What do you need from me on the day?<span class="faq-icon">+</span></button>
+    <div class="faq-answer"><p>Just access to the car and space to work around it. We confirm the small practical details, like a plug point or tap if needed, before we book you in.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">Do I need to be home while you work?<span class="faq-icon">+</span></button>
+    <div class="faq-answer"><p>No. Most clients let us in, carry on with their day and come back to a car that looks brand new. As long as we can reach the car, we handle the rest. If special access or safety arrangements are needed, we'll agree on those with you beforehand.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">How do I pay?<span class="faq-icon">+</span></button>
+    <div class="faq-answer"><p>Nothing upfront. We confirm your price when we send the quote, and you only pay on the day, once the job is done and you are happy.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">What if it rains on the day?<span class="faq-icon">+</span></button>
+    <div class="faq-answer"><p>We move your booking to the next clear day at no charge. You never lose your spot or your price.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">Is machine polishing safe for my paint?<span class="faq-icon">+</span></button>
+    <div class="faq-answer"><p>Yes, when it's the right process for your car. We use a measured polish that removes a controlled, thin layer of clear coat to cut out swirls and light scratches. If your car needs multi-stage correction instead, we'll tell you honestly on the day rather than guess.</p></div>
   </div>
 </section>
 
+<!-- FINAL CTA -->
 <section class="cta">
   <p class="eyebrow">READY WHEN YOU ARE</p>
   <h2>Let's get your space clean.</h2>
-  <p>Send us your details and we'll contact you through WhatsApp to confirm your appointment.</p>
+  <p>Send us your details and we'll contact you through WhatsApp to confirm your appointment. Nothing to pay until the job is done.</p>
   <a href="booking.html" class="btn btn-primary">Book Now</a>
 </section>
 
@@ -114,7 +242,8 @@
       <h3>Explore</h3>
       <div class="footer-links">
         <a href="index.html">Home</a><a href="#services">Services</a>
-        <a href="#story">Our Story</a><a href="booking.html">Book Now</a>
+        <a href="#how">How It Works</a><a href="#faq">FAQ</a>
+        <a href="booking.html">Book Now</a>
         <a href="price.html">Prices</a>
       </div>
     </div>
@@ -151,6 +280,7 @@
   </div>
 </div>
 
+<script src="config.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

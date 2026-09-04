@@ -109,9 +109,97 @@ img,video{max-width:100%}
 .private-main{min-height:70vh;max-width:900px;margin:auto;padding:70px 6vw}.private-card{background:#fff;border:1px solid var(--border);border-radius:25px;padding:35px}.private-card h1,.story-main h1{font-family:var(--display);font-size:clamp(3rem,7vw,6rem);letter-spacing:-.07em;line-height:.95;margin:0 0 18px}.private-card>p{color:var(--muted);line-height:1.7}.private-card label{display:block;margin:25px 0 7px}.hidden{display:none!important}.price-result{display:flex;justify-content:space-between;align-items:center;margin-top:12px}.price-result strong{font-size:28px}
 .legal-hero{background:var(--forest);color:#fff;padding:90px 7vw}.legal-hero h1{font-family:var(--display);font-size:clamp(3rem,7vw,6rem);letter-spacing:-.07em;line-height:.95;margin:0}.legal-main{max-width:900px;margin:auto;padding:70px 6vw}.legal-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:35px}.legal-card h2{font-family:var(--display);font-size:32px}.legal-card h3{font-size:20px;margin-top:35px}.legal-card p{color:var(--muted);line-height:1.8}.updated{font-size:11px;color:var(--muted)}.legal-links{display:flex;flex-wrap:wrap;gap:9px;border-top:1px solid var(--border);padding-top:25px;margin-top:35px}.legal-links a{border:1px solid var(--border);padding:10px 13px;border-radius:999px;text-decoration:none;font-size:10px;font-weight:900}.story-main{max-width:850px;margin:auto;padding:100px 7vw}.story-main>p{font-size:17px;line-height:1.8;color:var(--muted);max-width:700px}.simple-footer{padding-top:25px;padding-bottom:25px}
 
+/* ============ TRUST STRIP ============ */
+.trust-strip{background:var(--forest);padding:22px 7vw;display:flex;flex-wrap:wrap;justify-content:center;gap:14px 34px}
+.trust-strip span{color:rgba(255,255,255,.88);font-size:12px;font-weight:800;letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.trust-strip span::before{content:"✓";color:var(--lime);font-weight:900}
+
+/* ============ HOW IT WORKS ============ */
+.how-section{padding:100px 7vw;max-width:1200px;margin:auto}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.how-step{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px}
+.how-step .num{font-family:var(--display);font-size:13px;font-weight:900;color:var(--emerald);margin-bottom:10px;display:block}
+.how-step p{margin:0;font-size:14px;line-height:1.6;font-weight:700}
+
+/* ============ MOBILE WASH PROCESS STRIP (overlaid on service-showcase) ============ */
+.process-strip{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.process-strip span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:999px;padding:9px 15px;font-size:11px;font-weight:800;letter-spacing:.02em}
+
+/* ============ PACKAGE TEASER CARDS ============ */
+.package-section{padding:100px 7vw;max-width:1200px;margin:auto}
+.package-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.package-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:26px;display:flex;flex-direction:column}
+.package-card h3{font-family:var(--display);font-size:22px;margin:0 0 8px}
+.package-card p{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 16px;flex:1}
+.package-card .from-price{font-family:var(--display);font-size:26px;margin-bottom:16px}
+.package-card .from-price span{font-size:11px;color:var(--muted);font-family:var(--body);font-weight:400}
+
+/* ============ PRICING CTA BANNER ============ */
+.pricing-cta{background:linear-gradient(120deg,var(--forest),#0f3b2c);color:#fff;border-radius:28px;padding:60px 7vw;text-align:center;max-width:1200px;margin:0 auto 20px}
+.pricing-cta h2{font-family:var(--display);font-size:clamp(2rem,5vw,3.4rem);margin:0 0 12px;letter-spacing:-.05em}
+.pricing-cta p{max-width:520px;margin:0 auto 26px;color:rgba(255,255,255,.78);line-height:1.7}
+
+/* ============ CAROUSEL — RECENT CARS ============ */
+.gallery-section{padding:100px 7vw;max-width:1200px;margin:auto}
+.carousel{position:relative;border-radius:24px;overflow:hidden;background:#0b2f24}
+.carousel-track{display:flex;transition:transform .45s ease}
+.carousel-slide{flex:0 0 100%;position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#123a2c,#0b2f24)}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.carousel-slide .slide-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;color:rgba(255,255,255,.55);gap:8px;font-size:13px;text-align:center;padding:20px}
+.carousel-slide .slide-placeholder strong{color:rgba(255,255,255,.8);font-family:var(--display);font-size:18px;font-weight:700}
+.carousel-label{position:absolute;left:20px;bottom:18px;color:#fff;font-family:var(--display);font-size:18px;background:rgba(4,24,16,.55);padding:8px 16px;border-radius:999px;backdrop-filter:blur(4px)}
+.carousel-nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.9);border:0;font-size:16px;cursor:pointer;color:var(--forest);display:flex;align-items:center;justify-content:center}
+.carousel-nav.prev{left:14px}.carousel-nav.next{right:14px}
+.carousel-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.carousel-dots button{width:8px;height:8px;border-radius:50%;border:0;background:var(--border);cursor:pointer;padding:0}
+.carousel-dots button.active{background:var(--emerald);width:22px;border-radius:5px}
+
+/* ============ BEFORE / AFTER SLIDER ============ */
+.ba-section{padding:100px 7vw;max-width:1000px;margin:auto}
+.ba-wrap{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:16/10;background:#123a2c;user-select:none;touch-action:none}
+.ba-after,.ba-before{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba-before-layer{position:absolute;inset:0;overflow:hidden;width:50%}
+.ba-before-layer img{width:200%;max-width:none;height:100%;object-fit:cover;position:absolute;left:0;top:0}
+.ba-tag{position:absolute;top:16px;color:#fff;font-size:11px;font-weight:900;letter-spacing:.06em;background:rgba(4,24,16,.55);padding:6px 12px;border-radius:999px;text-transform:uppercase}
+.ba-tag.before-tag{left:16px}.ba-tag.after-tag{right:16px}
+.ba-handle{position:absolute;top:0;bottom:0;left:50%;width:0;transform:translateX(-50%);cursor:ew-resize}
+.ba-handle::before{content:"";position:absolute;top:0;bottom:0;left:0;width:3px;background:#fff;transform:translateX(-50%)}
+.ba-handle-btn{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--forest);box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.ba-caption{text-align:center;margin-top:20px;color:var(--muted);font-size:13px;line-height:1.7}
+.ba-caption strong{display:block;color:var(--forest);font-family:var(--display);font-size:20px;margin-bottom:6px}
+
+/* ============ BRAND TRUST GRID ============ */
+.brand-section{padding:90px 7vw;max-width:1200px;margin:auto;text-align:center}
+.brand-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:40px}
+.brand-tile{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px 8px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.brand-badge{width:44px;height:44px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:13px;color:var(--forest)}
+.brand-tile span{font-size:10px;color:var(--muted);font-weight:700}
+.brand-disclaimer{margin-top:26px;color:var(--muted);font-size:11px;line-height:1.6;max-width:560px;margin-left:auto;margin-right:auto}
+
+/* ============ OPERATING HOURS ============ */
+.hours-section{padding:80px 7vw;max-width:800px;margin:auto}
+.hours-list{background:#fff;border:1px solid var(--border);border-radius:20px;padding:8px 26px;margin-top:30px}
+.hours-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--border);font-size:14px}
+.hours-row:last-child{border-bottom:0}
+.hours-row span:first-child{font-weight:800}
+.hours-row span:last-child{color:var(--muted)}
+
+/* ============ FAQ ACCORDION ============ */
+.faq-section{padding:100px 7vw;max-width:850px;margin:auto}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-question{width:100%;text-align:left;background:none;border:0;padding:22px 0;font-family:var(--display);font-size:18px;font-weight:700;color:var(--forest);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.faq-question .faq-icon{flex:none;font-size:20px;color:var(--emerald);transition:transform .2s ease}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.faq-answer p{color:var(--muted);line-height:1.7;font-size:14px;margin:0 0 22px}
+
+
 @media(max-width:800px){
   .site-header{padding:20px 6vw}.menu-toggle{display:block}.header-nav{display:none;position:absolute;top:72px;left:6vw;right:6vw;background:var(--forest);padding:18px;border-radius:16px;flex-direction:column;align-items:stretch}.header-nav.active{display:flex}.header-nav a{padding:8px}.hero-content{padding:130px 6vw 80px}.intro{padding:75px 6vw}.intro-grid{grid-template-columns:1fr;gap:20px}.service-content{padding:60px 6vw}.area-section{padding:75px 6vw}.area-grid{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr;gap:30px}.cookie-content{align-items:flex-start;flex-direction:column}.booking-main{padding:55px 6vw}.booking-card{padding:22px}.form-grid,.service-options{grid-template-columns:1fr}.form-group.full{grid-column:auto}.page-hero{padding:120px 0 45px}.booking-section{padding:40px 0 70px}.footer-inner{flex-direction:column;gap:18px}
+  .how-grid{grid-template-columns:1fr 1fr}.package-grid{grid-template-columns:1fr}.brand-grid{grid-template-columns:repeat(3,1fr)}.how-section,.package-section,.gallery-section,.ba-section,.brand-section,.hours-section,.faq-section{padding-left:6vw;padding-right:6vw}.pricing-cta{padding:50px 6vw;border-radius:20px}.trust-strip{padding:18px 6vw;gap:10px 20px}.trust-strip span{font-size:11px}
 }
 @media(max-width:520px){
   .hero{min-height:82vh}.hero h1{font-size:3.3rem}.booking-intro h1,.private-card h1,.story-main h1{font-size:3.4rem}.cookie-banner{left:10px;right:10px;bottom:10px}.cookie-settings-fixed{bottom:10px}.cookie-actions{width:100%}.cookie-btn{flex:1}.footer-bottom{flex-direction:column}
+  .how-grid{grid-template-columns:1fr}.brand-grid{grid-template-columns:repeat(2,1fr)}.carousel-nav{width:34px;height:34px;font-size:13px}.ba-handle-btn{width:36px;height:36px}
 }
+

@@ -181,6 +181,43 @@ window.GREENCITY_CONFIG = {
 
     }
 
+  },
+
+  // ==============================
+  // BUSINESS INFO — EDIT HERE
+  // Operating hours and service area, centrally controlled
+  // so index.html always shows the current values.
+  // ==============================
+  businessInfo: {
+
+    operatingHours: [
+      { day: "Monday", hours: "9:30 AM – 5:00 PM" },
+      { day: "Tuesday – Saturday", hours: "9:30 AM – 7:30 PM" },
+      { day: "Sunday", hours: "9:30 AM – 6:00 PM" }
+    ],
+
+    serviceArea: {
+      heading: "Which areas do you cover?",
+      body: "We are mobile and drive out all over Johannesburg — Sandton, Randburg, Fourways, Midrand, Rosebank and surrounds. Pop your suburb in the quote form and we will confirm we cover you.",
+      towns: [
+        { name: "Sandton", note: "Core Johannesburg service area" },
+        { name: "Randburg", note: "Core Johannesburg service area" },
+        { name: "Fourways", note: "Core Johannesburg service area" },
+        { name: "Midrand", note: "Core Johannesburg service area" },
+        { name: "Rosebank", note: "Core Johannesburg service area" }
+      ],
+      note: "Core-area appointments are mainly handled Monday to Friday. Customers outside our main service area may be scheduled on Saturday or Sunday, depending on distance and availability."
+    },
+
+    /* Brands shown in the "Owners trust us with cars like these"
+       trust section. Real logo image files are not used here —
+       see ASSETS-README.txt for why — this list only controls
+       which brand names/initials appear. */
+    trustedBrands: [
+      "BMW", "Mercedes-Benz", "Audi", "Toyota", "Volkswagen", "Nissan",
+      "Land Rover", "Ford", "Hyundai", "Kia", "Isuzu", "Volvo"
+    ]
+
   }
 
 };
