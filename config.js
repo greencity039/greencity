@@ -200,11 +200,12 @@ window.GREENCITY_CONFIG = {
       heading: "Which areas do you cover?",
       body: "We are mobile and drive out all over Johannesburg — Sandton, Randburg, Fourways, Midrand, Rosebank and surrounds. Pop your suburb in the quote form and we will confirm we cover you.",
       towns: [
-        { name: "Sandton", note: "Core Johannesburg service area" },
-        { name: "Randburg", note: "Core Johannesburg service area" },
-        { name: "Fourways", note: "Core Johannesburg service area" },
-        { name: "Midrand", note: "Core Johannesburg service area" },
-        { name: "Rosebank", note: "Core Johannesburg service area" }
+        { name: "Graskop", note: "Core Mpumalanga service area" },
+        { name: "Thulamahashe", note: "Core Mpumalanga service area" },
+        { name: "Lydenburg", note: "Core Mpumalanga service area" },
+        { name: "Polokwane", note: "Core Limpopo service area" },
+        { name: "Nelspruit", note: "Core Mpumalanga service area" }
+        { name: "Hoedspruit", note: "Core Limpopo service area" }
       ],
       note: "Core-area appointments are mainly handled Monday to Friday. Customers outside our main service area may be scheduled on Saturday or Sunday, depending on distance and availability."
     },
