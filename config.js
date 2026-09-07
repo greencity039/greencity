@@ -198,13 +198,23 @@ window.GREENCITY_CONFIG = {
 
     serviceArea: {
       heading: "Which areas do you cover?",
-      body: "We are mobile and drive out across our Mpumalanga and Limpopo service area — Graskop, Thulamahashe, Lydenburg, Nelspruit, Polokwane, Hoedspruit and surrounds. Pop your suburb in the quote form and we will confirm we cover you.",
+      body: "We are mobile and drive out across Mpumalanga and Limpopo — Sabie, Bushbuckridge, Acornhoek, Hazyview, White River, Mkhuhlu, Ermelo, Pilgrim's Rest, Secunda, Graskop, Thulamahashe, Lydenburg, Mbombela (Nelspruit), Polokwane, Phalaborwa, Hoedspruit and surrounds. Pop your suburb in the quote form and we will confirm we cover you.",
       towns: [
+        { name: "Sabie", note: "Core Mpumalanga service area" },
+        { name: "Bushbuckridge", note: "Core Mpumalanga service area" },
+        { name: "Acornhoek", note: "Core Mpumalanga service area" },
+        { name: "Hazyview", note: "Core Mpumalanga service area" },
+        { name: "White River", note: "Core Mpumalanga service area" },
+        { name: "Mkhuhlu", note: "Core Mpumalanga service area" },
+        { name: "Ermelo", note: "Core Mpumalanga service area" },
+        { name: "Pilgrim's Rest", note: "Core Mpumalanga service area" },
+        { name: "Secunda", note: "Core Mpumalanga service area" },
         { name: "Graskop", note: "Core Mpumalanga service area" },
         { name: "Thulamahashe", note: "Core Mpumalanga service area" },
         { name: "Lydenburg", note: "Core Mpumalanga service area" },
-        { name: "Nelspruit", note: "Core Mpumalanga service area" },
+        { name: "Mbombela (Nelspruit)", note: "Core Mpumalanga service area" },
         { name: "Polokwane", note: "Core Limpopo service area" },
+        { name: "Phalaborwa", note: "Core Limpopo service area" },
         { name: "Hoedspruit", note: "Core Limpopo service area" }
       ],
       note: "Core-area appointments are mainly handled Monday to Friday. Customers outside our main service area may be scheduled on Saturday or Sunday, depending on distance and availability."
