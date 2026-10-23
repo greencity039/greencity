@@ -14,7 +14,7 @@ window.GREENCITY_CONFIG = {
 
   /* WhatsApp number that receives bookings. Digits only,
      country code first, no + or spaces. */
-  whatsappNumber: "27664926146",
+  whatsappNumber: "27753219692",
 
   /* Private access code GreenCity gives to customers on
      WhatsApp so they can view prices on price.html.
