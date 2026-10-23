@@ -123,7 +123,7 @@
         const number = WHATSAPP_NUMBER || "27753219692";
 
         const message =
-`🌿 GREENCITY BOOKING REQUEST
+` GREENCITY BOOKING REQUEST
 
 Appointment: ${booking.appointment_number}
 
