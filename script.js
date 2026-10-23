@@ -4,7 +4,7 @@
     const config = window.GREENCITY_CONFIG || {};
 
     const WHATSAPP_NUMBER =
-        String(config.whatsappNumber || "27664926146")
+        String(config.whatsappNumber || "27753219692")
             .replace(/\D/g, "");
 
 
@@ -123,7 +123,7 @@
         const number = WHATSAPP_NUMBER || "27664926146";
 
         const message =
-`🌿 GREENCITY BOOKING REQUEST
+`GREENCITY BOOKING REQUEST
 
 Appointment: ${booking.appointment_number}
 
